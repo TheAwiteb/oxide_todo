@@ -1,0 +1,58 @@
+use std::path::Path;
+
+use actix_web::middleware::Logger;
+use actix_web::{web, App, HttpServer};
+use migration::{Migrator, MigratorTrait};
+use sea_orm::{Database, DatabaseConnection};
+
+mod auth;
+mod errors;
+mod schemas;
+
+/// Enishalize the database connection pool, return the database connection and if the database is existed.
+/// ### Panics
+/// * If can't get the database url from the environment
+/// * If the database connection pool cannot be created
+pub async fn enishalize_poll() -> DatabaseConnection {
+    let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    if !Path::new("db.sqlite3").exists() {
+        log::info!("Database is not existed, creating a new one");
+        std::fs::File::create("db.sqlite3").expect("Can't create the database file");
+    }
+    Database::connect(database_url)
+        .await
+        .expect("Failed to create database connection pool")
+}
+
+#[tokio::main]
+async fn main() -> std::io::Result<()> {
+    dotenv::dotenv().ok();
+    pretty_env_logger::init();
+
+    let host = std::env::var("HOST").unwrap_or_else(|_| "localhost".to_owned());
+    let port = std::env::var("PORT").unwrap_or_else(|_| "8080".to_owned());
+    let addr = format!("{}:{}", host, port);
+    let pool = enishalize_poll().await;
+    Migrator::up(&pool, None)
+        .await
+        .expect("Failed to run migrations");
+
+    log::info!("Listening on http://{}", addr);
+    HttpServer::new(move || {
+        App::new()
+            .app_data(web::Data::new(pool.clone()))
+            .service(
+                web::scope("/api")
+                    .wrap(Logger::default())
+                    .configure(auth::init_routes),
+            )
+            .default_service(web::route().to(|| async {
+                errors::Error::NotFound(
+                    "There is no endpoint in this path with this method ):".to_string(),
+                )
+            }))
+    })
+    .bind(addr)?
+    .run()
+    .await
+}

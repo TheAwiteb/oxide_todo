@@ -1,0 +1,26 @@
+[workspace]
+members = [ ".", "migration", "entity"]
+
+[package]
+name = "restful_todo"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+entity = { path = "entity" }
+migration = { path = "migration" }
+actix-web = "4.2.1"
+dotenv = "0.15.0"
+log = "0.4.17"
+pretty_env_logger = "0.4.0"
+sea-orm = { version = "0.10.2", features = ["runtime-tokio-rustls", "runtime-tokio", "sqlx-sqlite"] }
+sqlx-core = "0.6.2"
+tokio = { version = "1.21.2", features = ["rt-multi-thread", "macros"] }
+chrono = { version = "0.4.22", default-features = false, features = ["time"] }
+serde = { version = "1.0.147", features = ["derive"] }
+hmac = "0.12.1"
+sha2 = "0.10.6"
+jwt = "0.16.0"
+thiserror = "1.0.37"
+hex = "0.4.3"
