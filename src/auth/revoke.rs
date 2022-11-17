@@ -1,4 +1,4 @@
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{patch, web, HttpRequest, Responder};
 use chrono::Utc;
 use entity::user::Model as UserModel;
 use sea_orm::{ActiveModelTrait, DatabaseConnection, IntoActiveModel, Set};
@@ -17,6 +17,7 @@ pub async fn revoke_token(db: &DatabaseConnection, user: UserModel) -> TodoResul
         .map(UserSchema::try_from_active_model)?
 }
 
+#[patch("/revoke")]
 pub async fn revoke(req: HttpRequest, db: web::Data<DatabaseConnection>) -> impl Responder {
     let user = auth_utils::req_auth(req, &db).await?;
     revoke_token(&db, user).await

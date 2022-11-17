@@ -1,8 +1,9 @@
-use actix_web::{web, Responder};
+use actix_web::{post, web, Responder};
 use sea_orm::DatabaseConnection;
 
 use crate::schemas::auth::RegisterSchema;
 
+#[post("/register")]
 pub async fn register(
     db: web::Data<DatabaseConnection>,
     payload: web::Json<RegisterSchema>,

@@ -1,8 +1,9 @@
-use actix_web::{web, Responder};
+use actix_web::{post, web, Responder};
 use sea_orm::DatabaseConnection;
 
 use crate::schemas::auth::LoginSchema;
 
+#[post("/login")]
 pub async fn login(
     db: web::Data<DatabaseConnection>,
     payload: web::Json<LoginSchema>,

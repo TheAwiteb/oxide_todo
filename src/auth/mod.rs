@@ -9,8 +9,8 @@ mod revoke;
 pub fn init_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/auth")
-            .route("/register", web::post().to(register::register))
-            .route("/login", web::post().to(login::login))
-            .route("/revoke", web::patch().to(revoke::revoke)),
+            .service(register::register)
+            .service(login::login)
+            .service(revoke::revoke),
     );
 }
