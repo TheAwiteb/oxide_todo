@@ -6,14 +6,19 @@ use sea_orm::error::DbErr;
 use sea_orm::{ActiveModelTrait, DatabaseConnection, RuntimeErr, Set};
 use serde::{Deserialize, Serialize};
 use sqlx_core::error::Error as SqlxError;
+use utoipa::ToSchema;
 
 use crate::auth::utils as auth_utils;
 use crate::errors::{Error as TodoError, Result as TodoResult};
 use crate::schemas::user::UserSchema;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone, ToSchema)]
 pub struct RegisterSchema {
+    /// The name of the new user, should be unique
+    #[schema(example = "Awiteb")]
     pub username: String,
+    /// The password of the new user
+    #[schema(example = "123456")]
     pub password: String,
 }
 

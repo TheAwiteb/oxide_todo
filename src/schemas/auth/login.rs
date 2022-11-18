@@ -1,13 +1,19 @@
 use sea_orm::DatabaseConnection;
 use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 use crate::auth::utils as auth_utils;
 use crate::errors::Result as TodoResult;
 use crate::schemas::user::UserSchema;
 
-#[derive(Debug, Serialize, Deserialize)]
+/// The schema for login request
+#[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
 pub struct LoginSchema {
+    /// The username of the user
+    #[schema(example = "Awiteb")]
     pub username: String,
+    /// The password of the user
+    #[schema(example = "123456")]
     pub password: String,
 }
 

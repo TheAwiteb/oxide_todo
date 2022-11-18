@@ -52,7 +52,7 @@ pub async fn get_user_by_token(db: &DatabaseConnection, token: &str) -> TodoResu
         .one(db)
         .await
         .database_err()?
-        .user_not_found_err()?;
+        .incorrect_user_err()?;
 
     if let Some(ref last_revoke) = user.last_revoke_token_at {
         if &claims.get_created_at() < last_revoke {
@@ -79,8 +79,7 @@ pub async fn get_user_by_username_and_password(
         .one(db)
         .await
         .database_err()?
-        .ok_or("Just to convert Option to Result")
-        .user_not_found_err()
+        .incorrect_user_err()
 }
 
 /// Return user model by given request

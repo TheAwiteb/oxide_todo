@@ -2,16 +2,25 @@ use actix_web::{body::BoxBody, http::StatusCode, HttpRequest, HttpResponse, Resp
 use entity::user::{ActiveModel, Model as UserModel};
 use sea_orm::DatabaseConnection;
 use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 use crate::auth::utils as auth_utils;
 use crate::errors::Result as TodoResult;
 
-#[derive(Debug, Serialize, Deserialize)]
+/// The schema of the user response
+#[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
 pub struct UserSchema {
+    /// The name of the user
     #[serde(rename = "username")]
+    #[schema(example = "Awiteb")]
     pub name: String,
+    /// The token of the user
+    #[schema(
+        example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdXN0IjoidGVzdCJ9.rCOJrqm0MQvxTcNyyXJdqI7smV7VNvAJZ02LslGkL78"
+    )]
     pub token: String,
     #[serde(skip)]
+    #[schema(hidden)]
     code: u16,
 }
 

@@ -4,7 +4,9 @@ use actix_web::middleware::Logger;
 use actix_web::{web, App, HttpServer};
 use migration::{Migrator, MigratorTrait};
 use sea_orm::{Database, DatabaseConnection};
+use utoipa_swagger_ui::SwaggerUi;
 
+mod api_docs;
 mod auth;
 mod errors;
 mod schemas;
@@ -38,19 +40,34 @@ async fn main() -> std::io::Result<()> {
         .expect("Failed to run migrations");
 
     log::info!("Listening on http://{}", addr);
+    log::info!(
+        "OpenAPI document is available at http://{}/docs/openapi.json",
+        addr,
+    );
+    log::info!("Swagger UI is available at http://{}/docs/swagger/", addr);
+
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .service(
                 web::scope("/api")
                     .wrap(Logger::default())
-                    .configure(auth::init_routes),
+                    .configure(auth::init_routes)
+                    .default_service(web::route().to(|| async {
+                        errors::Error::NotFound(
+                            "There is no endpoint in this path with this method ):".to_string(),
+                        )
+                    })),
             )
-            .default_service(web::route().to(|| async {
-                errors::Error::NotFound(
-                    "There is no endpoint in this path with this method ):".to_string(),
-                )
-            }))
+            .service(
+                web::scope("/docs")
+                    .wrap(Logger::default())
+                    .service(api_docs::openapi_json)
+                    .service(
+                        SwaggerUi::new("/swagger/{_:.*}")
+                            .url("/docs/openapi.json", Default::default()),
+                    ),
+            )
     })
     .bind(addr)?
     .run()

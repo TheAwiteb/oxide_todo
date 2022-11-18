@@ -14,6 +14,8 @@ pub enum Error {
     NotFound(String),
     #[error("{0}")]
     Forbidden(String),
+    #[error("{0}")]
+    Unauthorized(String),
 }
 
 pub trait TodoError {
@@ -22,13 +24,13 @@ pub trait TodoError {
     fn server_err(self, message: &str) -> Self::Output;
     fn bad_request_err(self, message: &str) -> Self::Output;
     fn not_found_err(self, message: &str) -> Self::Output;
-    fn forbidden_err(self, message: &str) -> Self::Output;
+    fn unauthorized_err(self, message: &str) -> Self::Output;
 
     fn database_err(self) -> Self::Output;
     fn already_username_err(self, username: &str) -> Self::Output;
     fn key_creation_err(self) -> Self::Output;
     fn invalid_token_err(self) -> Self::Output;
-    fn user_not_found_err(self) -> Self::Output;
+    fn incorrect_user_err(self) -> Self::Output;
 }
 
 impl<T, E> TodoError for std::result::Result<T, E> {
@@ -46,8 +48,8 @@ impl<T, E> TodoError for std::result::Result<T, E> {
         self.map_err(|_| Error::NotFound(message.to_string()))
     }
 
-    fn forbidden_err(self, message: &str) -> Self::Output {
-        self.map_err(|_| Error::Forbidden(message.to_string()))
+    fn unauthorized_err(self, message: &str) -> Self::Output {
+        self.map_err(|_| Error::Unauthorized(message.to_string()))
     }
 
     fn database_err(self) -> Self::Output {
@@ -55,7 +57,7 @@ impl<T, E> TodoError for std::result::Result<T, E> {
     }
 
     fn already_username_err(self, username: &str) -> Self::Output {
-        self.bad_request_err(&format!("Username {} already exists", username))
+        self.bad_request_err(&format!("Username `{}` already exists", username))
     }
 
     fn key_creation_err(self) -> Self::Output {
@@ -63,11 +65,11 @@ impl<T, E> TodoError for std::result::Result<T, E> {
     }
 
     fn invalid_token_err(self) -> Self::Output {
-        self.forbidden_err("The token is invalid")
+        self.unauthorized_err("The token is invalid")
     }
 
-    fn user_not_found_err(self) -> Self::Output {
-        self.bad_request_err("User not found")
+    fn incorrect_user_err(self) -> Self::Output {
+        self.bad_request_err("The username or password is incorrect")
     }
 }
 
@@ -86,8 +88,8 @@ impl<T> TodoError for Option<T> {
         self.ok_or("/:").not_found_err(message)
     }
 
-    fn forbidden_err(self, message: &str) -> Self::Output {
-        self.ok_or("/:").forbidden_err(message)
+    fn unauthorized_err(self, message: &str) -> Self::Output {
+        self.ok_or("/:").unauthorized_err(message)
     }
 
     fn database_err(self) -> Self::Output {
@@ -106,8 +108,8 @@ impl<T> TodoError for Option<T> {
         self.ok_or("/:").invalid_token_err()
     }
 
-    fn user_not_found_err(self) -> Self::Output {
-        self.ok_or("/:").user_not_found_err()
+    fn incorrect_user_err(self) -> Self::Output {
+        self.ok_or("/:").incorrect_user_err()
     }
 }
 
@@ -118,6 +120,7 @@ impl ResponseError for Error {
             Self::BAdRequest(_) => StatusCode::BAD_REQUEST,
             Self::NotFound(_) => StatusCode::NOT_FOUND,
             Self::Forbidden(_) => StatusCode::FORBIDDEN,
+            Self::Unauthorized(_) => StatusCode::UNAUTHORIZED,
         }
     }
 
