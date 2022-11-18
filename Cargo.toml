@@ -22,8 +22,11 @@ sqlx-core = "0.6.2"
 tokio = { version = "1.21.2", features = ["rt-multi-thread", "macros"] }
 chrono = { version = "0.4.22", default-features = false, features = ["time"] }
 serde = { version = "1.0.147", features = ["derive"] }
+serde_json = "1.0.88"
 hmac = "0.12.1"
 sha2 = "0.10.6"
 jwt = "0.16.0"
 thiserror = "1.0.37"
 hex = "0.4.3"
+utoipa = { version = "2.3.0", features = ["actix_extras"] }
+utoipa-swagger-ui = { version = "2.0.1", features = ["actix-web"] }
