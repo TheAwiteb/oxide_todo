@@ -1,10 +1,10 @@
-pub mod traits;
-pub mod utils;
 use actix_web::web;
 
-mod login;
-mod register;
-mod revoke;
+pub mod login;
+pub mod register;
+pub mod revoke;
+pub mod traits;
+pub mod utils;
 
 pub fn init_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
