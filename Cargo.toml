@@ -30,3 +30,5 @@ thiserror = "1.0.37"
 hex = "0.4.3"
 utoipa = { version = "2.3.0", features = ["actix_extras"] }
 utoipa-swagger-ui = { version = "2.0.1", features = ["actix-web"] }
+actix-governor = "0.4.0-beta.1"
+governor = "0.4.2"
