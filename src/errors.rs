@@ -4,7 +4,7 @@ use actix_web::{
 
 use crate::schemas::errors::ErrorSchema;
 
-#[derive(thiserror::Error, Debug)]
+#[derive(thiserror::Error, Debug, Clone)]
 pub enum Error {
     #[error("{0}")]
     InternalServer(String),
@@ -128,8 +128,7 @@ impl ResponseError for Error {
     }
 
     fn error_response(&self) -> HttpResponse {
-        let error = ErrorSchema::new(self.status_code().as_u16(), self.to_string());
-        HttpResponse::build(self.status_code()).json(error)
+        HttpResponse::build(self.status_code()).json(ErrorSchema::from(self.clone()))
     }
 }
 
