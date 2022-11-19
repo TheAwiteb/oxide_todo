@@ -6,8 +6,8 @@ use governor::{
     NotUntil,
 };
 
-use crate::errors::Error as TodoError;
 use crate::{auth::utils::extract_token, errors::TodoError as TodoErrorTrait};
+use crate::{errors::Error as TodoError, schemas::errors::ErrorSchema};
 
 #[derive(Debug, Clone)]
 pub struct BearerTokenExtractor;
@@ -49,12 +49,12 @@ impl actix_governor::KeyExtractor for IpAddressExtractor {
     fn exceed_rate_limit_response(
         &self,
         negative: &NotUntil<QuantaInstant>,
-        _: HttpResponseBuilder,
+        mut res: HttpResponseBuilder,
     ) -> HttpResponse {
         let wait_time = negative
             .wait_time_from(DefaultClock::default().now())
             .as_secs();
-        TodoError::TooManyRequests(wait_time).error_response()
+        res.json(ErrorSchema::from(TodoError::TooManyRequests(wait_time)))
     }
 }
 
