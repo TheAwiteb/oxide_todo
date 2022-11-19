@@ -9,6 +9,7 @@ use utoipa_swagger_ui::SwaggerUi;
 mod api_docs;
 mod auth;
 mod errors;
+mod ratelimit;
 mod schemas;
 
 /// Enishalize the database connection pool, return the database connection and if the database is existed.
