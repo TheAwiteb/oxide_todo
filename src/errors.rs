@@ -16,6 +16,8 @@ pub enum Error {
     Forbidden(String),
     #[error("{0}")]
     Unauthorized(String),
+    #[error("Too many requests, retry in {0}s")]
+    TooManyRequests(u64),
 }
 
 pub trait TodoError {
@@ -121,6 +123,7 @@ impl ResponseError for Error {
             Self::NotFound(_) => StatusCode::NOT_FOUND,
             Self::Forbidden(_) => StatusCode::FORBIDDEN,
             Self::Unauthorized(_) => StatusCode::UNAUTHORIZED,
+            Self::TooManyRequests(_) => StatusCode::TOO_MANY_REQUESTS,
         }
     }
 
