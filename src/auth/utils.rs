@@ -82,15 +82,20 @@ pub async fn get_user_by_username_and_password(
         .incorrect_user_err()
 }
 
-/// Return user model by given request
-pub async fn req_auth(req: HttpRequest, db: &DatabaseConnection) -> TodoResult<UserModel> {
-    let token = req
-        .headers()
+/// Extract the token from the request header.
+pub fn extract_token(req: &HttpRequest) -> TodoResult<String> {
+    req.headers()
         .get("Authorization")
         .map(|token| token.to_str().map(|token| token.strip_prefix("Bearer ")))
         .bad_request_err("`Authorization` header is missing")?
         .bad_request_err("The token is invalid, cannot convert it to string")?
-        .bad_request_err("Token should start with `Bearer` prefix")?;
+        .bad_request_err("Token should start with `Bearer` prefix")
+        .map(|token| token.to_owned())
+}
 
-    get_user_by_token(db, token).await
+/// Return user model by given request
+pub async fn req_auth(req: HttpRequest, db: &DatabaseConnection) -> TodoResult<UserModel> {
+    let token = extract_token(&req)?;
+
+    get_user_by_token(db, &token).await
 }
