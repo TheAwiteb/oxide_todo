@@ -15,9 +15,24 @@ Just like that, you have a RESTful API running on your machine.
 - The API documentation is available at [http://localhost:8080/docs/swagger/](http://localhost:8080/docs/swagger/)
 - The OpenAPI specification is available at [http://localhost:8080/docs/openapi.json](http://localhost:8080/docs/openapi.json)
 
+### Environment variables
+<!-- Table of enviroment variables -->
+| Name | Description | Default |
+| --- | --- | --- |
+| `DATABASE_URL` | The database url | `sqlite://db.sqlite3` |
+| `SECRET_KEY` | The secret key for JWT | ` ` |
+| `HOST` | The host to bind | `localhost` |
+| `PORT` | The port to run the server | `8080` |
+| `RATE_LIMIT_BURST_SIZE` | The burst size for rate limiter | `60` |
+| `RATE_LIMIT_PER_SECOND` | The rate limit per second | `5` |
+| `API_CONTACT_NAME` | The name of the API contact | ` ` |
+| `API_CONTACT_URL` | The url of the API contact | ` ` |
+| `API_CONTACT_EMAIL` | The email of the API contact | ` ` |
+| `API_TITLE` | The title of the API | `RESTful Todo API documentation` |
+
 ## Soon
 - [X] Swagger UI for API documentation
-- [ ] Rate limiting
+- [X] Rate limiting
 - [ ] CI with Github Actions
 - [ ] Unit tests
 
