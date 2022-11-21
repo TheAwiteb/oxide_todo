@@ -1,3 +1,5 @@
+use std::env;
+
 use actix_web::{get, HttpResponse, Responder};
 use utoipa::openapi::security::{HttpAuthScheme, HttpBuilder, SecurityScheme};
 use utoipa::{Modify, OpenApi};
@@ -38,7 +40,17 @@ impl Modify for SecurityAddon {
                     .bearer_format("JWT")
                     .build(),
             ),
-        )
+        );
+        let mut contact = utoipa::openapi::Contact::new();
+        contact.name = Some(env::var("API_CONTACT_NAME").expect("`API_CONTACT_NAME` must be set"));
+        contact.url = Some(env::var("API_CONTACT_URL").expect("`API_CONTACT_URL` must be set"));
+        contact.email =
+            Some(env::var("API_CONTACT_EMAIL").expect("`API_CONTACT_EMAIL` must be set"));
+        openapi.info.description = Some(include_str!("../api-desc.md").to_owned());
+        openapi.info.title =
+            env::var("API_TITLE").unwrap_or_else(|_| "RESTful Todo API documentation".to_owned());
+
+        openapi.info.contact = Some(contact);
     }
 }
 
