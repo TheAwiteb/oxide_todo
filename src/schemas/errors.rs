@@ -1,5 +1,8 @@
+use actix_web::ResponseError;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
+
+use crate::errors::Error as TodoError;
 
 /// The schema for response error
 #[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
@@ -16,5 +19,11 @@ impl ErrorSchema {
             status,
             message: message.into(),
         }
+    }
+}
+
+impl From<TodoError> for ErrorSchema {
+    fn from(error: TodoError) -> Self {
+        Self::new(error.status_code().as_u16(), error.to_string())
     }
 }

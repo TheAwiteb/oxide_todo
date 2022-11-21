@@ -4,7 +4,7 @@ use actix_web::{
 
 use crate::schemas::errors::ErrorSchema;
 
-#[derive(thiserror::Error, Debug)]
+#[derive(thiserror::Error, Debug, Clone)]
 pub enum Error {
     #[error("{0}")]
     InternalServer(String),
@@ -16,6 +16,8 @@ pub enum Error {
     Forbidden(String),
     #[error("{0}")]
     Unauthorized(String),
+    #[error("Too many requests, retry in {0}s")]
+    TooManyRequests(u64),
 }
 
 pub trait TodoError {
@@ -121,12 +123,12 @@ impl ResponseError for Error {
             Self::NotFound(_) => StatusCode::NOT_FOUND,
             Self::Forbidden(_) => StatusCode::FORBIDDEN,
             Self::Unauthorized(_) => StatusCode::UNAUTHORIZED,
+            Self::TooManyRequests(_) => StatusCode::TOO_MANY_REQUESTS,
         }
     }
 
     fn error_response(&self) -> HttpResponse {
-        let error = ErrorSchema::new(self.status_code().as_u16(), self.to_string());
-        HttpResponse::build(self.status_code()).json(error)
+        HttpResponse::build(self.status_code()).json(ErrorSchema::from(self.clone()))
     }
 }
 
