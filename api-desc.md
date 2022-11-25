@@ -22,6 +22,6 @@ The API has a rate limit of 60 burst requests, and 1 request per 5 seconds, if y
 ### Headers
 <!-- The ratelimit headers -->
 
-- `X-RateLimit-Limit`: Your burst limit.
-- `X-RateLimit-Remaining`: The number of requests remaining in the current burst. Will return `Too Many Requests` if you exceed the limit.
-- `X-RateLimit-Reset`: The number of seconds left to add a new request to the burst.
+- `x-ratelimit-limit`: Your burst limit.
+- `x-ratelimit-remaining`: The number of requests remaining in the current burst. Will return `Too Many Requests` if you exceed the limit.
+- `x-ratelimit-reset`: The number of seconds left to reset the burst.

@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use actix_governor::Governor;
+use actix_extensible_rate_limit::backend::memory::InMemoryBackend;
 use actix_web::middleware::Logger;
 use actix_web::{web, App, HttpServer};
 use migration::{Migrator, MigratorTrait};
@@ -28,7 +28,7 @@ pub async fn enishalize_poll() -> DatabaseConnection {
         .expect("Failed to create database connection pool")
 }
 
-#[tokio::main]
+#[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv::dotenv().ok();
     pretty_env_logger::init();
@@ -48,12 +48,14 @@ async fn main() -> std::io::Result<()> {
     );
     log::info!("Swagger UI is available at http://{}/docs/swagger/", addr);
 
-    let ip_limit_config = crate::ratelimit::init_ip();
+    let ratelimit_backend = InMemoryBackend::builder().build();
 
     HttpServer::new(move || {
+        let ratelimit_middleware_builder = ratelimit::init_ip(ratelimit_backend.clone());
+
         App::new()
             .app_data(web::Data::new(pool.clone()))
-            .wrap(Governor::new(&ip_limit_config))
+            .wrap(ratelimit_middleware_builder.build())
             .wrap(Logger::default())
             .service(web::scope("/api").configure(auth::init_routes))
             .service(
