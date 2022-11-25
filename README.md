@@ -23,8 +23,8 @@ Just like that, you have a RESTful API running on your machine.
 | `SECRET_KEY` | The secret key for JWT | ` ` |
 | `HOST` | The host to bind | `localhost` |
 | `PORT` | The port to run the server | `8080` |
-| `RATE_LIMIT_BURST_SIZE` | The burst size for rate limiter | `60` |
-| `RATE_LIMIT_PER_SECOND` | The rate limit per second | `5` |
+| `RATE_LIMIT_BURST_SIZE` | The burst size for rate limiter | `30` |
+| `RATE_LIMIT_PER_SECOND` | The time to reset the burst | `60` |
 | `API_CONTACT_NAME` | The name of the API contact | ` ` |
 | `API_CONTACT_URL` | The url of the API contact | ` ` |
 | `API_CONTACT_EMAIL` | The email of the API contact | ` ` |
