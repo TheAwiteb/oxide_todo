@@ -10,7 +10,7 @@ use crate::schemas::user::UserSchema;
 /// Revoke a token by user, will return the new token
 pub async fn revoke_token(db: &DatabaseConnection, user: UserModel) -> TodoResult<UserSchema> {
     let mut user = user.into_active_model();
-    user.last_revoke_token_at = Set(Some(Utc::now().naive_utc()));
+    user.token_created_at = Set(Utc::now().naive_utc().timestamp());
     user.save(db)
         .await
         .database_err()

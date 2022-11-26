@@ -1,7 +1,6 @@
 use std::collections::BTreeMap;
 
 use actix_web::HttpRequest;
-use chrono::Utc;
 use entity::user::{Column as UserColumn, Entity as User, Model as UserModel};
 use hmac::{Hmac, Mac};
 use jwt::{header::HeaderType, Header, SignWithKey, Token};
@@ -17,12 +16,16 @@ pub fn hash_function(data: &str) -> String {
     hex::encode(Sha256::digest(data))
 }
 
-/// Generate a token for a user
-pub fn generate_token(user_id: u32) -> TodoResult<String> {
+/// Generate a JWT token for a user
+/// ### Arguments
+/// * `user_id` - The id of the user
+/// * `created_date` - The timestamp of the token created, to add it to JWT payload
+pub fn generate_token(user_id: u32, created_date: i64) -> TodoResult<String> {
     let secret = std::env::var("SECRET_KEY").expect("SECRET_KEY must be set");
-    let now = Utc::now().timestamp().to_string();
     let str_id = user_id.to_string();
-    let payload: BTreeMap<&str, &str> = [("id", str_id.as_str()), ("created_at", &now)].into();
+    let str_timestamp = created_date.to_string();
+    let payload: BTreeMap<&str, &str> =
+        [("id", str_id.as_str()), ("created_at", &str_timestamp)].into();
     let key: Hmac<Sha256> = Hmac::new_from_slice(secret.as_bytes()).key_creation_err()?;
     let header = jwt::Header {
         type_: Some(HeaderType::JsonWebToken),
@@ -54,12 +57,11 @@ pub async fn get_user_by_token(db: &DatabaseConnection, token: &str) -> TodoResu
         .database_err()?
         .incorrect_user_err()?;
 
-    if let Some(ref last_revoke) = user.last_revoke_token_at {
-        if &claims.get_created_at() < last_revoke {
-            return Err(TodoError::Forbidden("Token has been revoked".to_owned()));
-        }
+    if claims.get_created_at() != user.token_created_at {
+        Err(TodoError::Forbidden("Token has been revoked".to_owned()))
+    } else {
+        Ok(user)
     }
-    Ok(user)
 }
 
 /// Return the user by given username and password, or return an error if the user does not exist.

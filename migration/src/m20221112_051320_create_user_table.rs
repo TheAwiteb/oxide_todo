@@ -19,8 +19,12 @@ impl MigrationTrait for Migration {
                     )
                     .col(ColumnDef::new(User::Name).string().not_null().unique_key())
                     .col(ColumnDef::new(User::HashedPassword).string().not_null())
-                    .col(ColumnDef::new(User::LastRevokeTokenAt).date_time().null())
-                    .col(ColumnDef::new(User::CreatedAt).date_time().not_null())
+                    .col(
+                        ColumnDef::new(User::TokenCreatedAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .col(ColumnDef::new(User::CreatedAt).big_integer().not_null())
                     .to_owned(),
             )
             .await
@@ -39,6 +43,6 @@ enum User {
     Id,
     Name,
     HashedPassword,
-    LastRevokeTokenAt,
+    TokenCreatedAt,
     CreatedAt,
 }
