@@ -40,13 +40,16 @@ impl UserSchema {
 
     /// Create a user schema from a user active model, will generate a token
     pub fn try_from_active_model(user: ActiveModel) -> TodoResult<Self> {
-        auth_utils::generate_token(user.id.unwrap())
+        // Here `unwrap` means extrct the value from the `ActiveValue`
+        // See https://docs.rs/sea-orm/0.10.4/sea_orm/entity/enum.ActiveValue.html#method.unwrap
+        auth_utils::generate_token(user.id.unwrap(), user.token_created_at.unwrap())
             .map(|token| Self::new(user.name.unwrap(), token))
     }
 
     /// Create a user schema from a user model, will generate a token
     pub fn try_from_model(user: UserModel) -> TodoResult<Self> {
-        auth_utils::generate_token(user.id).map(|token| Self::new(user.name, token))
+        auth_utils::generate_token(user.id, user.token_created_at)
+            .map(|token| Self::new(user.name, token))
     }
 
     /// Set the status code of the response
