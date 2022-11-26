@@ -25,12 +25,13 @@ pub struct RegisterSchema {
 impl RegisterSchema {
     pub async fn create(&self, db: &DatabaseConnection) -> TodoResult<UserSchema> {
         let hashed_password = auth_utils::hash_function(&self.password);
+        let current_time = Utc::now().naive_utc().timestamp();
 
         let user = NewUser {
             name: Set(self.username.clone()),
             hashed_password: Set(hashed_password),
-            last_revoke_token_at: Set(None),
-            created_at: Set(Utc::now().naive_utc()),
+            token_created_at: Set(current_time),
+            created_at: Set(current_time),
             ..Default::default()
         }
         .save(db)
