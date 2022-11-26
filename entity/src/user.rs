@@ -9,8 +9,8 @@ pub struct Model {
     pub id: u32,
     pub name: String,
     pub hashed_password: String,
-    pub last_revoke_token_at: Option<DateTime>,
-    pub created_at: DateTime,
+    pub token_created_at: i64,
+    pub created_at: i64,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
