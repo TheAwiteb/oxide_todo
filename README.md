@@ -35,6 +35,8 @@ Just like that, you have a RESTful API running on your machine.
 - [X] Rate limiting
 - [ ] CI with Github Actions
 - [ ] Unit tests
+- [ ] Dockerize the server
+- [ ] Makefile for easy setup, useing [cargo-make](https://github.com/sagiegurari/cargo-make)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
