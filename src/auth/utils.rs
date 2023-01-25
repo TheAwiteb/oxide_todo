@@ -70,6 +70,12 @@ pub async fn get_user_by_username_and_password(
     username: &str,
     password: &str,
 ) -> TodoResult<UserModel> {
+    if username.is_empty() || password.is_empty() {
+        return Err(TodoError::BAdRequest(
+            "Invalid username or password, must be not empty".to_owned(),
+        ));
+    }
+
     let hashed_password = hash_function(password);
 
     User::find()
