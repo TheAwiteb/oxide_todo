@@ -13,28 +13,28 @@ authors = ["Awiteb <https://github.com/TheAwiteb>"]
 [dependencies]
 entity = { path = "entity" }
 migration = { path = "migration" }
-actix-web = "4.2.1"
-dotenv = "0.15.0"
-log = "0.4.17"
-pretty_env_logger = "0.4.0"
-sea-orm = { version = "0.10.4", features = ["runtime-tokio-rustls", "runtime-tokio", "sqlx-sqlite"] }
-sqlx-core = "0.6.2"
-chrono = { version = "0.4.22", default-features = false, features = ["time"] }
-serde = { version = "1.0.147", features = ["derive"] }
-serde_json = "1.0.88"
-hmac = "0.12.1"
-sha2 = "0.10.6"
-jwt = "0.16.0"
-thiserror = "1.0.37"
-hex = "0.4.3"
-utoipa = { version = "2.3.0", features = ["actix_extras"] }
-utoipa-swagger-ui = { version = "2.0.1", features = ["actix-web"] }
-actix-extensible-rate-limit = {version = "0.2.1", default-features = false, features = ["dashmap"]}
+actix-web = "= 4.2.1"
+dotenv = "= 0.15.0"
+log = "= 0.4.17"
+pretty_env_logger = "= 0.4.0"
+sea-orm = { version = "= 0.10.4", features = ["runtime-tokio-rustls", "runtime-tokio", "sqlx-sqlite"] }
+sqlx-core = "= 0.6.2"
+chrono = { version = "= 0.4.22", default-features = false, features = ["time"] }
+serde = { version = "= 1.0.147", features = ["derive"] }
+serde_json = "= 1.0.88"
+hmac = "= 0.12.1"
+sha2 = "= 0.10.6"
+jwt = "= 0.16.0"
+thiserror = "= 1.0.37"
+hex = "= 0.4.3"
+utoipa = { version = "= 2.3.0", features = ["actix_extras"] }
+utoipa-swagger-ui = { version = "= 2.0.1", features = ["actix-web"] }
+actix-extensible-rate-limit = {version = "= 0.2.1", default-features = false, features = ["dashmap"]}
 
 [dev-dependencies]
-actix-http = "3.2.2"
-actix-test = "0.1.0"
-awc = "3.0.1"
-futures-core = "0.3.25"
-rstest = "0.16.0"
-serial_test = "0.9.0"
+actix-http = "= 3.2.2"
+actix-test = "= 0.1.0"
+awc = "= 3.0.1"
+futures-core = "= 0.3.25"
+rstest = "= 0.16.0"
+serial_test = "= 0.9.0"

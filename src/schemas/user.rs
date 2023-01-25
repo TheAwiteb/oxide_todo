@@ -21,7 +21,7 @@ pub struct UserSchema {
     pub token: String,
     #[serde(skip)]
     #[schema(hidden)]
-    code: u16,
+    code: StatusCode,
 }
 
 impl UserSchema {
@@ -29,7 +29,7 @@ impl UserSchema {
         Self {
             name,
             token,
-            code: 200,
+            code: StatusCode::OK,
         }
     }
 
@@ -53,7 +53,7 @@ impl UserSchema {
     }
 
     /// Set the status code of the response
-    pub fn with_code(mut self, code: u16) -> Self {
+    pub fn with_code(mut self, code: StatusCode) -> Self {
         self.code = code;
         self
     }
@@ -63,10 +63,6 @@ impl Responder for UserSchema {
     type Body = BoxBody;
 
     fn respond_to(self, _: &HttpRequest) -> HttpResponse<Self::Body> {
-        HttpResponse::build(
-            StatusCode::from_u16(self.code)
-                .unwrap_or_else(|_| panic!("`{}` is invalid status code", self.code)),
-        )
-        .json(self)
+        HttpResponse::build(self.code).json(self)
     }
 }

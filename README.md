@@ -10,6 +10,10 @@ Clone the repository and run the following commands:
 cargo run
 ```
 Just like that, you have a RESTful API running on your machine.
+And if you want to see the logs, run the following commands:
+```bash
+RUST_LOG=debug cargo run
+```
 
 ### Documentation
 - The API documentation is available at [http://localhost:8080/docs/swagger/](http://localhost:8080/docs/swagger/)
@@ -46,6 +50,23 @@ dotenv cargo test tests::revoke -- --test-threads 1
 - [ ] Unit tests
 - [ ] Dockerize the server
 - [ ] Makefile for easy setup, useing [cargo-make](https://github.com/sagiegurari/cargo-make)
+
+## Development
+For testing and building and run CI you need to use [`just`](https://github.com/casey/just) command runner. You can install it using the following command:
+```bash
+cargo install just
+```
+### Usage
+To run the commands you need to type the command name after `just` command. For example `just ci`.
+#### Commands
+```
+build     # Build the RESTful API
+ci        # Run the CI
+fmt       # Format everything
+fmt-check # Check the format of everything
+linter    # Run Rust linter (clippy)
+tests     # Run the tests
+```
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
