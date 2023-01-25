@@ -23,7 +23,7 @@ pub async fn login_req(username: String, password: String) -> super::TestRespons
 #[case::login_with_correct_credentials("testusername1", "testpassword", 200)]
 #[case::login_with_uncorrect_credentials("testusername2", "testpassword", 400)]
 #[actix_web::test]
-#[serial(login_content_length)]
+#[serial]
 async fn login_endpoint(
     #[case] username: String,
     #[case] password: String,
