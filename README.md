@@ -42,5 +42,22 @@ RUST_LOG=debug cargo run
 - [ ] Dockerize the server
 - [ ] Makefile for easy setup, useing [cargo-make](https://github.com/sagiegurari/cargo-make)
 
+## Development
+For testing and building and run CI you need to use [`just`](https://github.com/casey/just) command runner. You can install it using the following command:
+```bash
+cargo install just
+```
+### Usage
+To run the commands you need to type the command name after `just` command. For example `just ci`.
+#### Commands
+```
+build     # Build the RESTful API
+ci        # Run the CI
+fmt       # Format everything
+fmt-check # Check the format of everything
+linter    # Run Rust linter (clippy)
+tests     # Run the tests
+```
+
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
