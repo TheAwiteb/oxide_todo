@@ -24,6 +24,12 @@ pub struct RegisterSchema {
 
 impl RegisterSchema {
     pub async fn create(&self, db: &DatabaseConnection) -> TodoResult<UserSchema> {
+        if self.username.is_empty() || self.password.is_empty() {
+            return Err(TodoError::BAdRequest(
+                "Invalid username or password, must be not empty".to_owned(),
+            ));
+        }
+
         let hashed_password = auth_utils::hash_function(&self.password);
         let current_time = Utc::now().naive_utc().timestamp();
 
