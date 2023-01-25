@@ -10,6 +10,10 @@ Clone the repository and run the following commands:
 cargo run
 ```
 Just like that, you have a RESTful API running on your machine.
+And if you want to see the logs, run the following commands:
+```bash
+RUST_LOG=debug cargo run
+```
 
 ### Documentation
 - The API documentation is available at [http://localhost:8080/docs/swagger/](http://localhost:8080/docs/swagger/)
