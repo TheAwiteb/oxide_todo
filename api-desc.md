@@ -6,7 +6,7 @@ Simple TODO API to CRUDS (Create, Read, Update, Searsh) the users todos, each us
 <!-- How to authenticate -->
 In this API we use JWT (JSON Web Token) to authenticate the users, the token is generated when the user is created and is returned in the response. The token is used to authenticate the user in the other endpoints.<br>
 The token is sent in the header of the request in the format `Authorization: Bearer <token>`.<br>
-The token doesn't expire, but you can revoke it with the endpoint `/api/auth/revoke`.
+The token doesn't expire, but can be revoked, if the token is revoked the user will not be able to use it anymore, you can revoke the token in the `/api/auth/revoke` endpoint.
 
 ### Note (for the endpoints that need authentication)
 
@@ -17,11 +17,11 @@ The token doesn't expire, but you can revoke it with the endpoint `/api/auth/rev
 
 ## Rate Limit
 <!-- How the ratelimit work in the API -->
-The API has a rate limit of 60 burst requests, and 1 request per 5 seconds, if you exceed the limit you will receive a 429 status code.
+The API has a rate limit of 30 burst requests per minute, if you exceed the limit will return `429 Too Many Requests`. 
 
 ### Headers
 <!-- The ratelimit headers -->
 
-- `x-ratelimit-limit`: Your burst limit.
-- `x-ratelimit-remaining`: The number of requests remaining in the current burst. Will return `Too Many Requests` if you exceed the limit.
-- `x-ratelimit-reset`: The number of seconds left to reset the burst.
+- `x-ratelimit-limit`: Your burst size, maximum number of requests you can make in a burst
+- `x-ratelimit-remaining`: The requests remaining in the current burst, when it reaches 0 the next request will return `429 Too Many Requests`.
+- `x-ratelimit-reset`: The time in seconds when the current burst will be reset.
