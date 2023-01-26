@@ -1,6 +1,5 @@
 # RESTful Todo
-RESTful Todo API with [Actix](https://actix.rs) and [SeaORM](https://www.sea-ql.org/). Documented by [swagger-ui](https://swagger.io/)
-
+RESTful Todo API with [Actix](https://actix.rs) and [SeaORM](https://www.sea-ql.org/). Documented by [swagger-ui](https://swagger.io/). Authenticated by [JWT](https://jwt.io/). Rate limited by [actix_extensible_rate_limit](https://crates.io/crates/actix_extensible_rate_limit). Tested by [rstest](https://crates.io/crates/rstest). Have fun! 😁
 ### Prerequisites
 - [Rust](https://www.rust-lang.org/tools/install)
 
@@ -10,16 +9,17 @@ Clone the repository and run the following commands:
 cargo run
 ```
 Just like that, you have a RESTful API running on your machine.
-And if you want to see the logs, run the following commands:
+If you want to see the logs, you can run the following command:
 ```bash
 RUST_LOG=debug cargo run
 ```
 
 ### Documentation
-- The API documentation is available at [http://localhost:8080/docs/swagger/](http://localhost:8080/docs/swagger/)
-- The OpenAPI specification is available at [http://localhost:8080/docs/openapi.json](http://localhost:8080/docs/openapi.json)
+- The API documentation is available at `{HOST}:{PORT}/docs/swagger/` (default: [http://localhost:8080/docs/swagger](http://localhost:8080/docs/swagger/))
+- The OpenAPI specification is available at `{HOST}:{PORT}/docs/openapi.json` (default: [http://localhost:8080/docs/openapi.json](http://localhost:8080/docs/openapi.json)) 
 
 ### Environment variables
+Rename the `.env.example` file to `.env` and change the values to your needs. Empty default means that the variable is required.
 <!-- Table of enviroment variables -->
 | Name | Description | Default |
 | --- | --- | --- |
@@ -37,36 +37,28 @@ RUST_LOG=debug cargo run
 ### Testing
 #### Prerequisites
 - [dotenv cli](https://pypi.org/project/python-dotenv/)
+- [just](https://github.com/casey/just)
 ```bash
-echo > db.sqlite3 ; dotenv cargo test tests::register -- --test-threads 1
-dotenv cargo test tests::login -- --test-threads 1
-dotenv cargo test tests::revoke -- --test-threads 1
+just tests
 ```
+### Development
+For development you need to install [just](https://github.com/casey/just) and [dotenv cli](https://pypi.org/project/python-dotenv/).
+With `just` you can run all needed commands with one command, type `just` folloing by the command you want to run.<br>
+Available commands:
+- `just build` to build the RESTful API
+- `just ci` to run the CI
+- `just fmt` to format everything
+- `just fmt-check` to check the format of everything
+- `just linter` to run Rust linter (clippy)
+- `just tests` to run the tests
 
 ## Soon
 - [X] Swagger UI for API documentation
 - [X] Rate limiting
 - [ ] CI with Github Actions
-- [ ] Unit tests
+- [X] Unit tests
 - [ ] Dockerize the server
-- [ ] Makefile for easy setup, useing [cargo-make](https://github.com/sagiegurari/cargo-make)
-
-## Development
-For testing and building and run CI you need to use [`just`](https://github.com/casey/just) command runner. You can install it using the following command:
-```bash
-cargo install just
-```
-### Usage
-To run the commands you need to type the command name after `just` command. For example `just ci`.
-#### Commands
-```
-build     # Build the RESTful API
-ci        # Run the CI
-fmt       # Format everything
-fmt-check # Check the format of everything
-linter    # Run Rust linter (clippy)
-tests     # Run the tests
-```
+- [X] JustFile for easy setup, useing [just](https://github.com/casey/just)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
