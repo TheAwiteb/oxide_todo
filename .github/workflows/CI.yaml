@@ -7,8 +7,8 @@ on:
     branches: [ master ]
 
 jobs:
-  ci:
-    runs-on: ubuntu-24.04
+  CI:
+    runs-on: ubuntu-22.04
     
     steps:
     - uses: actions/checkout@v2
