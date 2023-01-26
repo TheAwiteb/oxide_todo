@@ -1,5 +1,13 @@
+<div align="center">
+
 # RESTful Todo
+
 RESTful Todo API with [Actix](https://actix.rs) and [SeaORM](https://www.sea-ql.org/). Documented by [swagger-ui](https://swagger.io/). Authenticated by [JWT](https://jwt.io/). Rate limited by [actix_extensible_rate_limit](https://crates.io/crates/actix_extensible_rate_limit). Tested by [rstest](https://crates.io/crates/rstest). Have fun! 😁
+
+[![CI](https://github.com/TheAwiteb/restful_todo/actions/workflows/CI.yaml/badge.svg)](https://github.com/TheAwiteb/restful_todo/actions/workflows/CI.yaml)
+
+</div>
+
 ### Prerequisites
 - [Rust](https://www.rust-lang.org/tools/install)
 
@@ -55,7 +63,7 @@ Available commands:
 ## Soon
 - [X] Swagger UI for API documentation
 - [X] Rate limiting
-- [ ] CI with Github Actions
+- [X] CI with Github Actions
 - [X] Unit tests
 - [ ] Dockerize the server
 - [X] JustFile for easy setup, useing [just](https://github.com/casey/just)
