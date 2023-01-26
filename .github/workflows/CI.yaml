@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  ci:
+    runs-on: ubuntu-24.04
+    
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+    - uses: extractions/setup-just@v1
+      with:
+        just-version: '1.12.0'
+    
+    - name: Building
+      run: just build
+    - name: Checking the format
+      run: just fmt-check
+    - name: Linting
+      run: just lint
+    - name: Testing
+      run: just tests
