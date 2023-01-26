@@ -25,6 +25,6 @@ jobs:
     - name: Checking the format
       run: just fmt-check
     - name: Linting
-      run: just lint
+      run: just linter
     - name: Testing
       run: just tests
