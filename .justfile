@@ -8,18 +8,20 @@ build:
 
 # Run register tests
 _register_tests:
-    dotenv cargo +stable test -j 1 --all-features tests::register
+    dotenv cargo +stable test -j 1 --all-features tests::register -- --test-threads 1
 
 # Run login tests
 _login_tests:
-    dotenv cargo +stable test -j 1 --all-features tests::login
+    dotenv cargo +stable test -j 1 --all-features tests::login -- --test-threads 1
 
 # Run revoke tests
 _revoke_tests:
-    dotenv cargo +stable test -j 1 --all-features tests::revoke
+    dotenv cargo +stable test -j 1 --all-features tests::revoke -- --test-threads 1
 
 # Run the tests
 tests:
+    # Clean the database
+    echo > db.sqlite3
     just _register_tests
     just _login_tests
     just _revoke_tests
