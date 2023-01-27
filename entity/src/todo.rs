@@ -2,6 +2,24 @@
 
 use sea_orm::entity::prelude::*;
 
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[sea_orm(rs_type = "String", db_type = "String(Some(1))")]
+/// The todo status
+pub enum Status {
+    /// Completed todo
+    #[sea_orm(string_value = "completed")]
+    Completed,
+    /// Pending todo
+    #[sea_orm(string_value = "pending")]
+    Pending,
+    /// Progress todo
+    #[sea_orm(string_value = "progress")]
+    Progress,
+    /// Cancelled todo
+    #[sea_orm(string_value = "cancelled")]
+    Cancelled,
+}
+
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "todo")]
 pub struct Model {
@@ -9,7 +27,7 @@ pub struct Model {
     pub id: u32,
     pub user_id: u32,
     pub title: String,
-    pub completed: bool,
+    pub status: Status,
     pub created_at: String,
     pub updated_at: String,
 }

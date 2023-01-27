@@ -19,6 +19,7 @@ impl MigrationTrait for Migration {
                     )
                     .col(ColumnDef::new(Todo::UserId).big_unsigned().not_null())
                     .col(ColumnDef::new(Todo::Title).string().not_null())
+                    .col(ColumnDef::new(Todo::Status).string().not_null())
                     .col(
                         ColumnDef::new(Todo::Completed)
                             .boolean()
@@ -45,6 +46,7 @@ enum Todo {
     Id,
     UserId,
     Title,
+    Status,
     Completed,
     CreatedAt,
     UpdatedAt,
