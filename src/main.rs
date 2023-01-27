@@ -21,10 +21,14 @@ mod tests;
 /// * If can't get the database url from the environment
 /// * If the database connection pool cannot be created
 pub async fn enishalize_poll() -> DatabaseConnection {
-    let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    if !Path::new("db.sqlite3").exists() {
+    let database_url =
+        std::env::var("DATABASE_URL").unwrap_or_else(|_| "sqlite://db.sqlite3".to_owned());
+    let database_pash = database_url
+        .strip_prefix("sqlite://")
+        .expect("The database url is invalid, it should start with `sqlite://`");
+    if !Path::new(database_pash).exists() {
         log::info!("Database is not existed, creating a new one");
-        std::fs::File::create("db.sqlite3").expect("Can't create the database file");
+        std::fs::File::create(database_pash).expect("Can't create the database file");
     }
     Database::connect(database_url)
         .await
@@ -52,6 +56,12 @@ async fn main() -> std::io::Result<()> {
     log::info!("Swagger UI is available at http://{}/docs/swagger/", addr);
 
     let ratelimit_backend = InMemoryBackend::builder().build();
+
+    println!(
+        "The RESTful API is available at <http://{addr}/api/>
+        \rOpenAPI document is available at <http://{addr}/docs/openapi.json>
+        \rSwagger UI is available at <http://{addr}/docs/swagger/>",
+    );
 
     HttpServer::new(move || {
         let ratelimit_middleware_builder = ratelimit::init_ip(ratelimit_backend.clone());
