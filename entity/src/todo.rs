@@ -9,7 +9,6 @@ pub struct Model {
     pub id: u32,
     pub user_id: u32,
     pub title: String,
-    pub body: String,
     pub completed: bool,
     pub created_at: String,
     pub updated_at: String,
