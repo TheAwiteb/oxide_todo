@@ -2,29 +2,37 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   CI:
     runs-on: ubuntu-22.04
-    
+
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-        override: true
-    - uses: extractions/setup-just@v1
-      with:
-        just-version: '1.12.0'
-    
-    - name: Building
-      run: just build
-    - name: Checking the format
-      run: just fmt-check
-    - name: Linting
-      run: just linter
-    - name: Testing
-      run: just tests
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - uses: extractions/setup-just@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          just-version: "1.12.0"
+      - name: Createing .env file
+        run: |
+          echo "SECRET_KEY=$(sed 's/.\{4\}$//' <<<\"$(head /dev/urandom | shasum -a 256)\")\"
+          API_CONTACT_NAME=\"Awiteb\"
+          API_CONTACT_URL=\"https://google.com\"
+          API_CONTACT_EMAIL=\"s@s.s\"" > .env
+        shell: bash
+      - name: Building
+        run: just build
+      - name: Checking the format
+        run: just fmt-check
+      - name: Linting
+        run: just linter
+      - name: Testing
+        run: just tests
