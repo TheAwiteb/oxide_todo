@@ -12,6 +12,7 @@ mod auth;
 mod errors;
 mod ratelimit;
 mod schemas;
+mod todo;
 
 #[cfg(test)]
 mod tests;
@@ -70,7 +71,11 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(pool.clone()))
             .wrap(ratelimit_middleware_builder.build())
             .wrap(Logger::default())
-            .service(web::scope("/api").configure(auth::init_routes))
+            .service(
+                web::scope("/api")
+                    .configure(auth::init_routes)
+                    .configure(todo::init_routes),
+            )
             .service(
                 // OpenAPI document
                 web::scope("/docs").service(api_docs::openapi_json).service(
