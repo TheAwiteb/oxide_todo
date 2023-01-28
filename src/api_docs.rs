@@ -7,20 +7,29 @@ use utoipa::{Modify, OpenApi};
 #[derive(OpenApi)]
 #[openapi(
     paths(
+        // Auth routes
         crate::auth::login::login,
         crate::auth::revoke::revoke,
-        crate::auth::register::register
+        crate::auth::register::register,
+        // Todo routes
+        crate::todo::create::create,
     ),
     components (
         schemas (
-            crate::schemas::auth::LoginSchema,
+            // General schemas
             crate::schemas::errors::ErrorSchema,
+            // Auth schemas
+            crate::schemas::auth::LoginSchema,
             crate::schemas::user::UserSchema,
             crate::schemas::auth::RegisterSchema,
+            // Todo schemas
+            crate::schemas::todo::CreateTodoSchema,
+            crate::schemas::todo::TodoScheam,
         )
     ),
     tags(
-        (name = "Auth", description = "A authentication routes")
+        (name = "Auth", description = "A authentication routes"),
+        (name = "Todo", description = "A todo routes")
     ),
     modifiers(&SecurityAddon)
 )]
