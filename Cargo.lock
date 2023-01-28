@@ -971,6 +971,7 @@ dependencies = [
  "async-std",
  "sea-orm",
  "sea-orm-migration",
+ "serde",
 ]
 
 [[package]]
