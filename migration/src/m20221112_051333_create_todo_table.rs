@@ -20,14 +20,8 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Todo::UserId).big_unsigned().not_null())
                     .col(ColumnDef::new(Todo::Title).string().not_null())
                     .col(ColumnDef::new(Todo::Status).string().not_null())
-                    .col(
-                        ColumnDef::new(Todo::Completed)
-                            .boolean()
-                            .not_null()
-                            .default(false),
-                    )
-                    .col(ColumnDef::new(Todo::CreatedAt).date().not_null())
-                    .col(ColumnDef::new(Todo::UpdatedAt).date().not_null())
+                    .col(ColumnDef::new(Todo::CreatedAt).big_integer().not_null())
+                    .col(ColumnDef::new(Todo::UpdatedAt).big_integer().not_null())
                     .to_owned(),
             )
             .await
@@ -47,7 +41,6 @@ enum Todo {
     UserId,
     Title,
     Status,
-    Completed,
     CreatedAt,
     UpdatedAt,
 }
