@@ -17,6 +17,7 @@ impl MigrationTrait for Migration {
                             .auto_increment()
                             .primary_key(),
                     )
+                    .col(ColumnDef::new(Todo::Uuid).uuid().not_null().unique_key())
                     .col(ColumnDef::new(Todo::UserId).big_unsigned().not_null())
                     .col(ColumnDef::new(Todo::Title).string().not_null())
                     .col(ColumnDef::new(Todo::Status).string().not_null())
@@ -38,6 +39,7 @@ impl MigrationTrait for Migration {
 enum Todo {
     Table,
     Id,
+    Uuid,
     UserId,
     Title,
     Status,

@@ -54,6 +54,8 @@ impl FromStr for Status {
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: u32,
+    #[sea_orm(unique_key)]
+    pub uuid: Uuid,
     pub user_id: u32,
     pub title: String,
     pub status: Status,

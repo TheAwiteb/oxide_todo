@@ -11,8 +11,11 @@ use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, Qu
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
-use crate::errors::{Error as TodoError, Result as TodoResult, TodoError as TodoErrorTrait};
 use crate::schemas::todo::TodoScheam as TodoSchema;
+use crate::{
+    errors::{Error as TodoError, Result as TodoResult, TodoError as TodoErrorTrait},
+    todo::utils::unique_uuid,
+};
 
 /// The schema for creating a todo
 #[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
@@ -52,8 +55,10 @@ impl CreateTodoSchema {
         }
 
         let current_time = Utc::now().naive_utc().timestamp();
+        let uuid = unique_uuid(TodoEntity::find(), TodoColumn::Uuid, db).await?;
 
         NewTodo {
+            uuid: Set(uuid),
             title: Set(self.title.clone()),
             status: Set(TodoStatus::from_str(&self.status).map_err(TodoError::BAdRequest)?),
             created_at: Set(current_time),
