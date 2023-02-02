@@ -28,7 +28,7 @@ async fn revoke_with_currect_token() {
     let user: UserSchema =
         serde_json::from_slice(login_res.body().await.unwrap().to_vec().as_slice()).unwrap();
     let mut revoke_res = revoke_request(format!("Bearer {}", user.token)).await;
-    println!("{:?}", revoke_res);
+    println!("{revoke_res:?}");
     println!("{:?}", revoke_res.body().await.unwrap());
     assert_eq!(revoke_res.status(), 200);
     super::check_content_type(&revoke_res);

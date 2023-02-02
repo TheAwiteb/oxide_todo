@@ -43,7 +43,7 @@ async fn main() -> std::io::Result<()> {
 
     let host = std::env::var("HOST").unwrap_or_else(|_| "localhost".to_owned());
     let port = std::env::var("PORT").unwrap_or_else(|_| "8080".to_owned());
-    let addr = format!("{}:{}", host, port);
+    let addr = format!("{host}:{port}");
     let pool = enishalize_poll().await;
     Migrator::up(&pool, None)
         .await

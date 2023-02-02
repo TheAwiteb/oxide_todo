@@ -59,7 +59,7 @@ impl<T, E> TodoError for std::result::Result<T, E> {
     }
 
     fn already_username_err(self, username: &str) -> Self::Output {
-        self.bad_request_err(&format!("Username `{}` already exists", username))
+        self.bad_request_err(&format!("Username `{username}` already exists"))
     }
 
     fn key_creation_err(self) -> Self::Output {
