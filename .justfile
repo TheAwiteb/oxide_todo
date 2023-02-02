@@ -8,15 +8,15 @@ build:
 
 # Run register tests
 _register_tests:
-    dotenv cargo +stable test -j 1 --all-features tests::register -- --test-threads 1
+    dotenv run cargo +stable test -j 1 --all-features tests::register
 
 # Run login tests
 _login_tests:
-    dotenv cargo +stable test -j 1 --all-features tests::login -- --test-threads 1
+    dotenv run cargo +stable test -j 1 --all-features tests::login
 
 # Run revoke tests
 _revoke_tests:
-    dotenv cargo +stable test -j 1 --all-features tests::revoke -- --test-threads 1
+    dotenv run cargo +stable test -j 1 --all-features tests::revoke
 
 # Run the tests
 tests:
