@@ -9,7 +9,7 @@ RESTful Todo API with [Actix](https://actix.rs) and [SeaORM](https://www.sea-ql.
 </div>
 
 ### Prerequisites
-- [Rust](https://www.rust-lang.org/tools/install)
+- [Rust](https://www.rust-lang.org/tools/install) (Minimum Supported Rust Version: 1.65.0)
 
 ### Usage
 Clone the repository and run the following commands:

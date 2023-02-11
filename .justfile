@@ -4,19 +4,19 @@ _default:
 
 # Build the RESTful API
 build:
-    cargo +stable build --all-features --verbose
+    cargo +1.65.0 build --all-features --verbose
 
 # Run register tests
 _register_tests:
-    dotenv run cargo +stable test -j 1 --all-features tests::register
+    dotenv run cargo +1.65.0 test -j 1 --all-features tests::register
 
 # Run login tests
 _login_tests:
-    dotenv run cargo +stable test -j 1 --all-features tests::login
+    dotenv run cargo +1.65.0 test -j 1 --all-features tests::login
 
 # Run revoke tests
 _revoke_tests:
-    dotenv run cargo +stable test -j 1 --all-features tests::revoke
+    dotenv run cargo +1.65.0 test -j 1 --all-features tests::revoke
 
 # Run the tests
 tests:
@@ -28,15 +28,15 @@ tests:
 
 # Format everything
 fmt:
-    cargo +stable fmt --all --verbose
+    cargo +1.65.0 fmt --all --verbose
 
 # Check the format of everything
 fmt-check:
-    cargo +stable fmt --all --check --verbose
+    cargo +1.65.0 fmt --all --check --verbose
 
 # Run Rust linter (clippy)
 linter:
-    cargo +stable clippy --workspace --examples --all-features --verbose
+    cargo +1.65.0 clippy --workspace --examples --all-features --verbose
 
 # Run the CI
 ci: build && fmt-check linter tests

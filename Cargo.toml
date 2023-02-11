@@ -9,6 +9,7 @@ publish = false
 description = "A RESTful API for a todo list, written in Rust."
 license = "MIT"
 authors = ["Awiteb <https://github.com/TheAwiteb>"]
+rust-version = "1.65"
 
 [dependencies]
 entity = { path = "entity" }
