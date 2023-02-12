@@ -46,9 +46,10 @@ impl TodoScheam {
             updated_at,
         }
     }
+}
 
-    /// Create a todo from a active todo model
-    pub fn from_active_model(todo: entity::todo::ActiveModel) -> Self {
+impl From<entity::todo::ActiveModel> for TodoScheam {
+    fn from(todo: entity::todo::ActiveModel) -> Self {
         Self::new(
             todo.uuid.unwrap(),
             todo.title.unwrap(),

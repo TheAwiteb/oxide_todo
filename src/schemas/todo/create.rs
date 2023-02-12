@@ -68,7 +68,7 @@ impl CreateTodoSchema {
         }
         .save(db)
         .await
-        .map(TodoSchema::from_active_model)
+        .map(From::from)
         .database_err()
     }
 }
