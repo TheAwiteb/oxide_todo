@@ -20,15 +20,30 @@ pub struct TodoScheam {
     /// The status of the todo
     #[schema(value_type = String, example = "completed")]
     pub status: TodoStatus,
+    /// The created time of the todo (Unix timestamp)
+    #[schema(example = "1620000000")]
+    pub created_at: i64,
+    /// The updated time of the todo (Unix timestamp)
+    /// If the todo is not updated, this value is equal to `created_at`
+    #[schema(example = "1620000000")]
+    pub updated_at: i64,
 }
 
 impl TodoScheam {
     /// Create a new todo
-    pub fn new(uuid: Uuid, title: String, status: TodoStatus) -> Self {
+    pub fn new(
+        uuid: Uuid,
+        title: String,
+        status: TodoStatus,
+        created_at: i64,
+        updated_at: i64,
+    ) -> Self {
         Self {
             uuid,
             title,
             status,
+            created_at,
+            updated_at,
         }
     }
 
@@ -38,6 +53,8 @@ impl TodoScheam {
             todo.uuid.unwrap(),
             todo.title.unwrap(),
             todo.status.unwrap(),
+            todo.created_at.unwrap(),
+            todo.updated_at.unwrap(),
         )
     }
 }
