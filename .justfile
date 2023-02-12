@@ -8,23 +8,29 @@ build:
 
 # Run register tests
 _register_tests:
-    dotenv run cargo +1.65.0 test -j 1 --all-features tests::register
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::register -- --test-threads 1
 
 # Run login tests
 _login_tests:
-    dotenv run cargo +1.65.0 test -j 1 --all-features tests::login
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::login -- --test-threads 1
 
 # Run revoke tests
 _revoke_tests:
-    dotenv run cargo +1.65.0 test -j 1 --all-features tests::revoke
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::revoke -- --test-threads 1
+
+# Run create todo tests
+_create_todo_tests:
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::create_todo -- --test-threads 1
 
 # Run the tests
 tests:
     # Clean the database
     echo > db.sqlite3
+    # Run the tests sequentially, because they are not independent
     just _register_tests
     just _login_tests
     just _revoke_tests
+    just _create_todo_tests
 
 # Format everything
 fmt:
