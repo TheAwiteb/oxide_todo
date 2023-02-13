@@ -22,6 +22,10 @@ _revoke_tests:
 _create_todo_tests:
     dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::create_todo -- --test-threads 1
 
+# Run list todo tests
+_list_todo_tests:
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::list_todo -- --test-threads 1
+
 # Run the tests
 tests:
     # Clean the database
@@ -31,6 +35,7 @@ tests:
     just _login_tests
     just _revoke_tests
     just _create_todo_tests
+    just _list_todo_tests
 
 # Format everything
 fmt:
