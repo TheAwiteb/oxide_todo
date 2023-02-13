@@ -32,7 +32,7 @@ use sea_orm::DatabaseConnection;
     tag = "Todo",
     security(("Bearer Token" = []))
 )]
-#[post("/")]
+#[post("")]
 pub async fn create(
     req: HttpRequest,
     db: web::Data<DatabaseConnection>,

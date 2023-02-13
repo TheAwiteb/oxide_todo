@@ -50,7 +50,7 @@ use sea_orm::{
     tag = "Todo",
     security(("Bearer Token" = []))
 )]
-#[get("/")]
+#[get("")]
 pub async fn list(
     req: HttpRequest,
     db: web::Data<DatabaseConnection>,
