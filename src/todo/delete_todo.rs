@@ -15,7 +15,7 @@ use crate::{
 
 /// Delete a single todo by uuid.
 #[utoipa::path(
-    context_path = "/api/todo",
+    context_path = "/api/todos",
     params(
         (
             "uuid", description = "The uuid of the todo", Path,

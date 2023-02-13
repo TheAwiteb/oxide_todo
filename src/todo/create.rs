@@ -10,7 +10,7 @@ use sea_orm::DatabaseConnection;
 /// - `progress`: Progress todo
 /// - `cancelled`: Cancelled todo
 #[utoipa::path(
-    context_path = "/api/todo",
+    context_path = "/api/todos",
     request_body = CreateTodoSchema,
     responses(
         (

@@ -12,7 +12,7 @@ use sea_orm::{
 
 /// list todos, filterable by status, title, limit, offset, order, and order_by.
 #[utoipa::path(
-    context_path = "/api/todo",
+    context_path = "/api/todos",
     params(TodoFilters),
     responses(
         (
@@ -54,7 +54,6 @@ use sea_orm::{
 pub async fn list(
     req: HttpRequest,
     db: web::Data<DatabaseConnection>,
-    // FIXME: The endpoint returns 400 and plain text when the value is invalid.
     params: web::Query<TodoFilters>,
 ) -> ApiResult<TodoListSchema> {
     let db = db.get_ref();

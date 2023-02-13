@@ -9,7 +9,7 @@ pub mod utils;
 
 pub fn init_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("/todo")
+        web::scope("/todos")
             .service(create::create)
             .service(get_todo::get_todo)
             .service(delete_todo::delete_todo)
