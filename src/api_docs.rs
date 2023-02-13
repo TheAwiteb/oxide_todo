@@ -16,6 +16,7 @@ use utoipa::{Modify, OpenApi};
         crate::todo::list::list,
         crate::todo::get_todo::get_todo,
         crate::todo::delete_todo::delete_todo,
+        crate::todo::delete_todos::delete_todos,
     ),
     components (
         schemas (

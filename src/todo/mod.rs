@@ -14,6 +14,7 @@ pub fn init_routes(cfg: &mut web::ServiceConfig) {
             .service(create::create)
             .service(get_todo::get_todo)
             .service(delete_todo::delete_todo)
-            .service(list::list),
+            .service(list::list)
+            .service(delete_todos::delete_todos),
     );
 }
