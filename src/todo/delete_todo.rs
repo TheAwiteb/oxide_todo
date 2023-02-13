@@ -10,7 +10,7 @@ use uuid::Uuid;
 use crate::{
     auth::utils::req_auth,
     errors::{ErrorTrait, Result as ApiResult},
-    schemas::{errors::ErrorSchema, todo::TodoScheam},
+    schemas::{message::MessageSchema, todo::TodoScheam},
 };
 
 /// Delete a single todo by uuid.
@@ -34,8 +34,8 @@ use crate::{
             }}
         ),
         (
-            status = 404, description = "There is no todo with the given uuid", body = ErrorSchema,
-            example = json!(ErrorSchema::new(404, "There is no todo with the given uuid"))
+            status = 404, description = "There is no todo with the given uuid", body = MessageSchema,
+            example = json!(MessageSchema::new(404, "There is no todo with the given uuid"))
         )
     ),
     tag = "Todo",

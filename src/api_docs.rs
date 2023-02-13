@@ -20,7 +20,7 @@ use utoipa::{Modify, OpenApi};
     components (
         schemas (
             // General schemas
-            crate::schemas::errors::ErrorSchema,
+            crate::schemas::message::MessageSchema,
             // Auth schemas
             crate::schemas::auth::LoginSchema,
             crate::schemas::user::UserSchema,

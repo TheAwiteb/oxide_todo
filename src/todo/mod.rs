@@ -2,6 +2,7 @@ use actix_web::web;
 
 pub mod create;
 pub mod delete_todo;
+pub mod delete_todos;
 pub mod get_todo;
 pub mod list;
 pub mod queries;

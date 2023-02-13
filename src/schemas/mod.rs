@@ -1,4 +1,4 @@
 pub mod auth;
-pub mod errors;
+pub mod message;
 pub mod todo;
 pub mod user;

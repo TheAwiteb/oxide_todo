@@ -6,12 +6,12 @@ use actix_extensible_rate_limit::{
 };
 use actix_web::{dev::ServiceRequest, http::StatusCode, HttpResponse};
 
-use crate::{errors::Error as ApiError, schemas::errors::ErrorSchema};
+use crate::{errors::Error as ApiError, schemas::message::MessageSchema};
 
 /// The response error for rate limit exceeded
 fn rate_limit_exceeded(rate_info: &SimpleOutput) -> HttpResponse {
     let rest_time = rate_info.seconds_until_reset();
-    let body = ErrorSchema::from(ApiError::TooManyRequests(rest_time));
+    let body = MessageSchema::from(ApiError::TooManyRequests(rest_time));
 
     HttpResponse::build(StatusCode::TOO_MANY_REQUESTS)
         .append_header(("x-ratelimit-limit", rate_info.limit()))

@@ -5,7 +5,7 @@ use actix_web::{
     HttpRequest, HttpResponse, Responder, ResponseError,
 };
 
-use crate::schemas::errors::ErrorSchema;
+use crate::schemas::message::MessageSchema;
 
 #[derive(thiserror::Error, Debug, Clone)]
 pub enum Error {
@@ -154,7 +154,7 @@ impl ResponseError for Error {
     }
 
     fn error_response(&self) -> HttpResponse {
-        HttpResponse::build(self.status_code()).json(ErrorSchema::from(self.clone()))
+        HttpResponse::build(self.status_code()).json(MessageSchema::from(self.clone()))
     }
 }
 

@@ -1,5 +1,5 @@
 use crate::auth::utils as auth_utils;
-use crate::schemas::{errors::ErrorSchema, todo::CreateTodoSchema};
+use crate::schemas::{message::MessageSchema, todo::CreateTodoSchema};
 use actix_web::{post, web, HttpRequest, Responder};
 use sea_orm::DatabaseConnection;
 
@@ -24,16 +24,16 @@ use sea_orm::DatabaseConnection;
             }}
         ),
         (
-            status = 400, description = "The title is empty", body = ErrorSchema,
-            example = json!(ErrorSchema::new(400, "The todo title is empty"))
+            status = 400, description = "The title is empty", body = MessageSchema,
+            example = json!(MessageSchema::new(400, "The todo title is empty"))
         ),
         (
-            status = 400, description = "The status is invalid", body = ErrorSchema,
-            example = json!(ErrorSchema::new(400, "The status `{status}` is invalid"))
+            status = 400, description = "The status is invalid", body = MessageSchema,
+            example = json!(MessageSchema::new(400, "The status `{status}` is invalid"))
         ),
         (
-            status = 400, description = "Dubplicate todo", body = ErrorSchema,
-            example = json!(ErrorSchema::new(400, "The todo `{title}` already exists"))
+            status = 400, description = "Dubplicate todo", body = MessageSchema,
+            example = json!(MessageSchema::new(400, "The todo `{title}` already exists"))
         ),
     ),
     tag = "Todo",

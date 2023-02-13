@@ -1,7 +1,7 @@
 use actix_web::{http::StatusCode, post, web, Responder};
 use sea_orm::DatabaseConnection;
 
-use crate::schemas::{auth::RegisterSchema, errors::ErrorSchema};
+use crate::schemas::{auth::RegisterSchema, message::MessageSchema};
 
 /// Register a new user, will return the new token for the user.
 ///
@@ -15,8 +15,8 @@ use crate::schemas::{auth::RegisterSchema, errors::ErrorSchema};
             status = 201, description = "Register successfully and return a new token", body = UserSchema
         ),
         (
-            status = 400, description = "The username is not unique", body = ErrorSchema,
-            example = json!(ErrorSchema::new(400, "Username `Awiteb` already exists"))
+            status = 400, description = "The username is not unique", body = MessageSchema,
+            example = json!(MessageSchema::new(400, "Username `Awiteb` already exists"))
         ),
     ),
     tag = "Auth"
