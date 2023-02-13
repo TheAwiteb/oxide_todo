@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 use crate::auth::utils as auth_utils;
-use crate::errors::Result as TodoResult;
+use crate::errors::Result as ApiResult;
 use crate::schemas::user::UserSchema;
 
 /// The schema for login request
@@ -20,7 +20,7 @@ pub struct LoginSchema {
 impl LoginSchema {
     /// Login a user, return a token
     /// If the user does not exist, return an error
-    pub async fn login(&self, db: &DatabaseConnection) -> TodoResult<UserSchema> {
+    pub async fn login(&self, db: &DatabaseConnection) -> ApiResult<UserSchema> {
         auth_utils::get_user_by_username_and_password(db, &self.username, &self.password)
             .await
             .map(UserSchema::try_from_model)?

@@ -1,4 +1,4 @@
-use crate::errors::{Error as TodoError, Result as TodoResult, TodoError as TodoErrorTrait};
+use crate::errors::{Error as ApiError, ErrorTrait, Result as ApiResult};
 
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, Select};
 use uuid::Uuid;
@@ -14,7 +14,7 @@ pub async fn unique_uuid<E>(
     select: Select<E>,
     column: impl ColumnTrait,
     db: &DatabaseConnection,
-) -> TodoResult<Uuid>
+) -> ApiResult<Uuid>
 where
     E: EntityTrait,
 {
@@ -33,7 +33,7 @@ where
         {
             return Ok(uuid);
         } else if counter > 10 {
-            return Err(TodoError::InternalServer(
+            return Err(ApiError::InternalServer(
                 "Failed to generate a unique uuid".to_string(),
             ));
         }

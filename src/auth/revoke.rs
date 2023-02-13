@@ -4,11 +4,11 @@ use entity::user::Model as UserModel;
 use sea_orm::{ActiveModelTrait, DatabaseConnection, IntoActiveModel, Set};
 
 use crate::auth::utils as auth_utils;
-use crate::errors::{Result as TodoResult, TodoError as TodoErrorTrait};
+use crate::errors::{ErrorTrait, Result as ApiResult};
 use crate::schemas::user::UserSchema;
 
 /// Revoke a token by user, will return the new token
-pub async fn revoke_token(db: &DatabaseConnection, user: UserModel) -> TodoResult<UserSchema> {
+pub async fn revoke_token(db: &DatabaseConnection, user: UserModel) -> ApiResult<UserSchema> {
     let mut user = user.into_active_model();
     user.token_created_at = Set(Utc::now().naive_utc().timestamp());
     user.save(db)

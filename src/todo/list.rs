@@ -1,5 +1,5 @@
 use crate::auth::utils as auth_utils;
-use crate::errors::{Result as TodoResult, TodoError};
+use crate::errors::{ErrorTrait, Result as ApiResult};
 use crate::schemas::todo::TodoListSchema;
 use crate::schemas::todo::TodoScheam;
 use crate::todo::queries::TodoFilters;
@@ -56,7 +56,7 @@ pub async fn list(
     db: web::Data<DatabaseConnection>,
     // FIXME: The endpoint returns 400 and plain text when the value is invalid.
     params: web::Query<TodoFilters>,
-) -> TodoResult<TodoListSchema> {
+) -> ApiResult<TodoListSchema> {
     let db = db.get_ref();
     let user = auth_utils::req_auth(req, db).await?;
     let mut query = TodoEntity::find().filter(TodoColumn::UserId.eq(user.id));

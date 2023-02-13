@@ -13,7 +13,7 @@ use utoipa::ToSchema;
 
 use crate::schemas::todo::TodoScheam as TodoSchema;
 use crate::{
-    errors::{Error as TodoError, Result as TodoResult, TodoError as TodoErrorTrait},
+    errors::{Error as ApiError, ErrorTrait, Result as ApiResult},
     todo::utils::unique_uuid,
 };
 
@@ -34,9 +34,9 @@ impl CreateTodoSchema {
         &self,
         db: &DatabaseConnection,
         author: &UserModel,
-    ) -> TodoResult<TodoSchema> {
+    ) -> ApiResult<TodoSchema> {
         if self.title.is_empty() {
-            return Err(TodoError::BAdRequest("The todo title is empty".to_string()));
+            return Err(ApiError::BAdRequest("The todo title is empty".to_string()));
         } else if TodoEntity::find()
             .filter(
                 TodoColumn::Title
@@ -48,7 +48,7 @@ impl CreateTodoSchema {
             .database_err()?
             .is_some()
         {
-            return Err(TodoError::BAdRequest(format!(
+            return Err(ApiError::BAdRequest(format!(
                 "The todo `{}` is already exists",
                 self.title
             )));
@@ -60,7 +60,7 @@ impl CreateTodoSchema {
         NewTodo {
             uuid: Set(uuid),
             title: Set(self.title.clone()),
-            status: Set(TodoStatus::from_str(&self.status).map_err(TodoError::BAdRequest)?),
+            status: Set(TodoStatus::from_str(&self.status).map_err(ApiError::BAdRequest)?),
             created_at: Set(current_time),
             updated_at: Set(current_time),
             user_id: Set(author.id),

@@ -23,7 +23,7 @@ pub enum Error {
     TooManyRequests(u64),
 }
 
-pub trait TodoError {
+pub trait ErrorTrait {
     type Output;
 
     fn server_err(self, message: &str) -> Self::Output;
@@ -38,7 +38,7 @@ pub trait TodoError {
     fn incorrect_user_err(self) -> Self::Output;
 }
 
-impl<T, E> TodoError for std::result::Result<T, E> {
+impl<T, E> ErrorTrait for std::result::Result<T, E> {
     type Output = Result<T>;
 
     fn server_err(self, message: &str) -> Self::Output {
@@ -78,7 +78,7 @@ impl<T, E> TodoError for std::result::Result<T, E> {
     }
 }
 
-impl<T> TodoError for Option<T> {
+impl<T> ErrorTrait for Option<T> {
     type Output = Result<T>;
 
     fn server_err(self, message: &str) -> Self::Output {

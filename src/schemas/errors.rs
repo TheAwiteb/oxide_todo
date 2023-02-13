@@ -2,7 +2,7 @@ use actix_web::ResponseError;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
-use crate::errors::Error as TodoError;
+use crate::errors::Error as ApiError;
 
 /// The schema for response error
 #[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
@@ -22,8 +22,8 @@ impl ErrorSchema {
     }
 }
 
-impl From<TodoError> for ErrorSchema {
-    fn from(error: TodoError) -> Self {
+impl From<ApiError> for ErrorSchema {
+    fn from(error: ApiError) -> Self {
         Self::new(error.status_code().as_u16(), error.to_string())
     }
 }
