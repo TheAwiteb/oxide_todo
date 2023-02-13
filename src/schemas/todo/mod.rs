@@ -1,7 +1,8 @@
 mod create;
+mod list;
 
 use actix_web::{body::BoxBody, Responder};
-pub use create::*;
+pub use {create::*, list::*};
 
 use entity::todo::Status as TodoStatus;
 use serde::{Deserialize, Serialize};
@@ -12,7 +13,7 @@ use uuid::Uuid;
 #[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
 pub struct TodoScheam {
     /// The id of the todo
-    #[schema(example = "a8bfed8d-4f8b-4150-8ace-3f8916609eba")]
+    #[schema(value_type = String, example = "a8bfed8d-4f8b-4150-8ace-3f8916609eba")]
     pub uuid: Uuid,
     /// The title of the todo
     #[schema(example = "Todo title")]
@@ -56,6 +57,18 @@ impl From<entity::todo::ActiveModel> for TodoScheam {
             todo.status.unwrap(),
             todo.created_at.unwrap(),
             todo.updated_at.unwrap(),
+        )
+    }
+}
+
+impl From<entity::todo::Model> for TodoScheam {
+    fn from(todo: entity::todo::Model) -> Self {
+        Self::new(
+            todo.uuid,
+            todo.title,
+            todo.status,
+            todo.created_at,
+            todo.updated_at,
         )
     }
 }
