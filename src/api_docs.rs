@@ -13,6 +13,7 @@ use utoipa::{Modify, OpenApi};
         crate::auth::register::register,
         // Todo routes
         crate::todo::create::create,
+        crate::todo::list::list,
     ),
     components (
         schemas (
@@ -25,6 +26,8 @@ use utoipa::{Modify, OpenApi};
             // Todo schemas
             crate::schemas::todo::CreateTodoSchema,
             crate::schemas::todo::TodoScheam,
+            crate::schemas::todo::TodoListSchema,
+            crate::schemas::todo::TodoListMetaSchema,
         )
     ),
     tags(
