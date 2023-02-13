@@ -3,7 +3,7 @@ use std::path::Path;
 use actix_extensible_rate_limit::backend::memory::InMemoryBackend;
 use actix_web::middleware::Logger;
 use actix_web::web::{JsonConfig, QueryConfig};
-use actix_web::{web, App, HttpServer};
+use actix_web::{web, App, HttpRequest, HttpServer};
 use errors::Error as ApiError;
 use migration::{Migrator, MigratorTrait};
 use sea_orm::{Database, DatabaseConnection};
@@ -86,10 +86,16 @@ async fn main() -> std::io::Result<()> {
             )
             .app_data(JsonConfig::default().error_handler(|err, _| ApiError::from(err).into()))
             .app_data(QueryConfig::default().error_handler(|err, _| ApiError::from(err).into()))
-            .default_service(web::route().to(|| async {
-                ApiError::NotFound(
-                    "There is no endpoint in this path with this method ):".to_string(),
-                )
+            .default_service(web::route().to(|req: HttpRequest| async move {
+                let path = req.path();
+                if path.ends_with('/') {
+                    ApiError::NotFound(format!(
+                        "There is no endpoint in this path with this method. Our API doesn't support trailing slashes, try `{}`",
+                        path.trim_end_matches('/')
+                    ))
+                } else {
+                    ApiError::NotFound("There is no endpoint in this path with this method".to_owned())
+                }
             }))
     })
     .bind(addr)?
