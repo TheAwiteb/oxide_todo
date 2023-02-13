@@ -1,4 +1,4 @@
-use actix_web::ResponseError;
+use actix_web::{body::BoxBody, http::StatusCode, Responder, ResponseError};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -19,6 +19,18 @@ impl MessageSchema {
             status,
             message: message.into(),
         }
+    }
+}
+
+impl Responder for MessageSchema {
+    type Body = BoxBody;
+
+    fn respond_to(self, _: &actix_web::HttpRequest) -> actix_web::HttpResponse<Self::Body> {
+        actix_web::HttpResponse::build(
+            StatusCode::from_u16(self.status).expect("Invalid status code, should be 100-599"),
+        )
+        .content_type("application/json")
+        .json(self)
     }
 }
 
