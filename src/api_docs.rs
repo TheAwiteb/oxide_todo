@@ -14,6 +14,7 @@ use utoipa::{Modify, OpenApi};
         // Todo routes
         crate::todo::create::create,
         crate::todo::list::list,
+        crate::todo::get_todo::get_todo,
     ),
     components (
         schemas (
