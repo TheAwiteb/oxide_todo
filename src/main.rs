@@ -2,7 +2,9 @@ use std::path::Path;
 
 use actix_extensible_rate_limit::backend::memory::InMemoryBackend;
 use actix_web::middleware::Logger;
+use actix_web::web::{JsonConfig, QueryConfig};
 use actix_web::{web, App, HttpServer};
+use errors::Error as ApiError;
 use migration::{Migrator, MigratorTrait};
 use sea_orm::{Database, DatabaseConnection};
 use utoipa_swagger_ui::SwaggerUi;
@@ -82,8 +84,10 @@ async fn main() -> std::io::Result<()> {
                     SwaggerUi::new("/swagger/{_:.*}").url("/docs/openapi.json", Default::default()),
                 ),
             )
+            .app_data(JsonConfig::default().error_handler(|err, _| ApiError::from(err).into()))
+            .app_data(QueryConfig::default().error_handler(|err, _| ApiError::from(err).into()))
             .default_service(web::route().to(|| async {
-                errors::Error::NotFound(
+                ApiError::NotFound(
                     "There is no endpoint in this path with this method ):".to_string(),
                 )
             }))

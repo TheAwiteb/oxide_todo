@@ -1,5 +1,8 @@
 use actix_web::{
-    body::BoxBody, http::StatusCode, HttpRequest, HttpResponse, Responder, ResponseError,
+    body::BoxBody,
+    error::{JsonPayloadError, QueryPayloadError},
+    http::StatusCode,
+    HttpRequest, HttpResponse, Responder, ResponseError,
 };
 
 use crate::schemas::errors::ErrorSchema;
@@ -112,6 +115,29 @@ impl<T> TodoError for Option<T> {
 
     fn incorrect_user_err(self) -> Self::Output {
         self.ok_or("/:").incorrect_user_err()
+    }
+}
+
+impl From<QueryPayloadError> for Error {
+    fn from(err: QueryPayloadError) -> Self {
+        match err {
+            QueryPayloadError::Deserialize(err) => Self::BAdRequest(err.to_string()),
+            _ => Self::BAdRequest("The parameters query are invalid".to_string()),
+        }
+    }
+}
+
+impl From<JsonPayloadError> for Error {
+    fn from(err: JsonPayloadError) -> Self {
+        match err {
+            JsonPayloadError::ContentType => {
+                Self::BAdRequest("The content type is not `application/json`".to_string())
+            }
+            JsonPayloadError::Deserialize(err) => {
+                Self::BAdRequest(format!("The request body is invalid: {err}"))
+            }
+            _ => Self::BAdRequest("The request body is invalid".to_string()),
+        }
     }
 }
 
