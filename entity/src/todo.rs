@@ -45,7 +45,7 @@ impl FromStr for Status {
             "pending" => Ok(Self::Pending),
             "progress" => Ok(Self::Progress),
             "cancelled" => Ok(Self::Cancelled),
-            _ => Err(format!("The status `{s}` is invalid")),
+            _ => Err(format!("The status `{s}` is invalid, expected `completed`, `pending`, `progress` or `cancelled`")),
         }
     }
 }
