@@ -14,7 +14,14 @@ use sea_orm::DatabaseConnection;
     request_body = CreateTodoSchema,
     responses(
         (
-            status = 200, description = "Create a new todo", body = CreateTodoSchema
+            status = 201, description = "Create a new todo", body = TodoSchema,
+            example = json!{{
+                "uuid": "b5a5d4e4-7d4e-4f4a-9f3d-3f3f3f3f3f3f",
+                "title": "Buy milk, eggs, and bread",
+                "status": "completed",
+                "created_at": 1615657387,
+                "updated_at": 1615657387,
+            }}
         ),
         (
             status = 400, description = "The title is empty", body = ErrorSchema,
