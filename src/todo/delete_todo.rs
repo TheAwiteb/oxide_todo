@@ -3,14 +3,14 @@ use actix_web::{
     web::{self, Path},
     HttpRequest,
 };
-use entity::todo::{Column as TodoColumn, Entity as TodoEntity};
-use sea_orm::{entity::ModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
+use sea_orm::{entity::ModelTrait, DatabaseConnection};
 use uuid::Uuid;
 
 use crate::{
     auth::utils::req_auth,
     errors::{ErrorTrait, Result as ApiResult},
     schemas::{message::MessageSchema, todo::TodoScheam},
+    todo::utils,
 };
 
 /// Delete a single todo by uuid.
@@ -50,16 +50,7 @@ pub async fn delete_todo(
     let db = db.get_ref();
     let uuid = uuid.into_inner();
     let user = req_auth(req, db).await?;
-
-    let todo = TodoEntity::find()
-        .filter(TodoColumn::Uuid.eq(uuid))
-        .filter(TodoColumn::UserId.eq(user.id))
-        .one(db)
-        .await
-        .database_err()?
-        .not_found_err("There is no todo with the given uuid")?;
-
+    let todo = utils::find_todo_by_uuid(uuid, user.id, db).await?;
     todo.clone().delete(db).await.database_err()?;
-
     Ok(todo.into())
 }
