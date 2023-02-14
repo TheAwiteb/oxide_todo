@@ -1,7 +1,6 @@
 use crate::auth::utils as auth_utils;
 use crate::errors::{ErrorTrait, Result as ApiResult};
 use crate::schemas::todo::TodoListSchema;
-use crate::schemas::todo::TodoScheam;
 use crate::todo::queries::TodoFilters;
 use actix_web::{get, web, HttpRequest};
 use entity::todo::{Column as TodoColumn, Entity as TodoEntity};
@@ -74,7 +73,8 @@ pub async fn list(
         .offset(params.offset())
         .all(db)
         .await
-        .map(|todos| todos.into_iter().map(TodoScheam::from).collect())
-        .map(|todos| TodoListSchema::new(todos, &params, total))
+        .map(|todos| {
+            TodoListSchema::new(todos.into_iter().map(From::from).collect(), &params, total)
+        })
         .database_err()
 }

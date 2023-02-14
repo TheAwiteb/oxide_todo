@@ -3,14 +3,14 @@ use actix_web::{
     web::{self, Path},
     HttpRequest,
 };
-use entity::todo::{Column as TodoColumn, Entity as TodoEntity};
-use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
+use sea_orm::DatabaseConnection;
 use uuid::Uuid;
 
 use crate::{
     auth::utils::req_auth,
-    errors::{ErrorTrait, Result as ApiResult},
+    errors::Result as ApiResult,
     schemas::{message::MessageSchema, todo::TodoScheam},
+    todo::utils,
 };
 
 /// Get a single todo by uuid.
@@ -51,12 +51,7 @@ pub async fn get_todo(
     let uuid = uuid.into_inner();
     let user = req_auth(req, db).await?;
 
-    TodoEntity::find()
-        .filter(TodoColumn::Uuid.eq(uuid))
-        .filter(TodoColumn::UserId.eq(user.id))
-        .one(db)
+    utils::find_todo_by_uuid(uuid, user.id, db)
         .await
-        .database_err()?
-        .map(TodoScheam::from)
-        .not_found_err("There is no todo with the given uuid")
+        .map(From::from)
 }
