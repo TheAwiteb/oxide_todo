@@ -14,7 +14,7 @@ use sea_orm::DatabaseConnection;
 /// - `cancelled`: Cancelled todo
 #[utoipa::path(
     context_path = "/api/todos",
-    request_body = CreateTodoSchema,
+    request_body = TodoContentSchema,
     responses(
         (
             status = 200, description = "Create a new todo", body = TodoSchema,

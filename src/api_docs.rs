@@ -27,7 +27,7 @@ use utoipa::{Modify, OpenApi};
             crate::schemas::user::UserSchema,
             crate::schemas::auth::RegisterSchema,
             // Todo schemas
-            crate::schemas::todo::CreateTodoSchema,
+            crate::schemas::todo::TodoContentSchema,
             crate::schemas::todo::TodoScheam,
             crate::schemas::todo::TodoListSchema,
             crate::schemas::todo::TodoListMetaSchema,

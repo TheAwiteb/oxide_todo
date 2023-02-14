@@ -1,8 +1,8 @@
-mod create;
+mod content;
 mod list;
 
 use actix_web::{body::BoxBody, Responder};
-pub use {create::*, list::*};
+pub use {content::*, list::*};
 
 use entity::todo::Status as TodoStatus;
 use serde::{Deserialize, Serialize};
