@@ -8,31 +8,35 @@ build:
 
 # Run register tests
 _register_tests:
-    dotenv cargo +1.65.0 test -j 1 --all-features tests::register -- --test-threads 1
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::register:: -- --test-threads 1
 
 # Run login tests
 _login_tests:
-    dotenv cargo +1.65.0 test -j 1 --all-features tests::login -- --test-threads 1
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::login:: -- --test-threads 1
 
 # Run revoke tests
 _revoke_tests:
-    dotenv cargo +1.65.0 test -j 1 --all-features tests::revoke -- --test-threads 1
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::revoke:: -- --test-threads 1
 
 # Run create todo tests
 _create_todo_tests:
-    dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::create_todo -- --test-threads 1
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::create_todo:: -- --test-threads 1
 
 # Run list todo tests
 _list_todo_tests:
-    dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::list_todo -- --test-threads 1
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::list_todo:: -- --test-threads 1
 
 # Run get todo tests
 _get_todo_tests:
-    dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::get_todo -- --test-threads 1
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::get_todo:: -- --test-threads 1
 
 # Run delete todo tests
 _delete_todo_tests:
-    dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::delete_todo -- --test-threads 1
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::delete_todo:: -- --test-threads 1
+
+# Run delete todos tests
+_delete_todos_tests:
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::delete_todos:: -- --test-threads 1
 
 # Run the tests
 tests:
@@ -46,6 +50,7 @@ tests:
     just _list_todo_tests
     just _get_todo_tests
     just _delete_todo_tests
+    just _delete_todos_tests
 
 # Format everything
 fmt:
