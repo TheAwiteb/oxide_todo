@@ -45,9 +45,9 @@ async fn get_valid_todo() {
     .unwrap();
     for todo in todos.data {
         let mut response = get_todo_req(todo.uuid).await;
-        assert_eq!(response.status().as_u16(), 200);
         check_content_type(&response);
         check_content_length(&response);
+        assert_eq!(response.status().as_u16(), 200);
 
         let todo_from_res: TodoScheam =
             serde_json::from_slice(response.body().await.unwrap().to_vec().as_slice()).unwrap();
@@ -63,7 +63,7 @@ async fn get_valid_todo() {
 #[serial_test::serial]
 async fn get_invalid_todo() {
     let response = get_todo_req(Uuid::new_v4()).await;
-    assert_eq!(response.status().as_u16(), 404);
     check_content_type(&response);
     check_content_length(&response);
+    assert_eq!(response.status().as_u16(), 404);
 }

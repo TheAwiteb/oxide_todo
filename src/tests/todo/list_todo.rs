@@ -1,4 +1,5 @@
 use crate::errors::Error as ApiError;
+use crate::tests::{check_content_length, check_content_type};
 use crate::{
     schemas::{todo::TodoListSchema, user::UserSchema},
     tests::{init_test_pool, login::login_req, TestResponseType},
@@ -83,7 +84,6 @@ async fn list_todo_endpoint(
     #[case] limit: u64,
 ) {
     let mut list_todo_res = list_todo_req(params).await;
-    assert_eq!(list_todo_res.status(), status_code);
     if status_code == 200 {
         let body = list_todo_res.body().await.unwrap();
         let body: TodoListSchema = serde_json::from_slice(body.to_vec().as_slice()).unwrap();
@@ -96,8 +96,9 @@ async fn list_todo_endpoint(
         assert_eq!(body.meta.offset, offset);
         assert_eq!(body.meta.limit, limit);
     }
-    crate::tests::check_content_type(&list_todo_res);
-    crate::tests::check_content_length(&list_todo_res);
+    check_content_type(&list_todo_res);
+    check_content_length(&list_todo_res);
+    assert_eq!(list_todo_res.status(), status_code);
 }
 
 #[rstest::rstest]
@@ -107,6 +108,8 @@ async fn list_todo_endpoint(
 #[serial_test::serial]
 async fn list_todo_endpoint_ordring(#[case] order: &str) {
     let mut list_todo_res = list_todo_req(&format!("order={order}")).await;
+    check_content_length(&list_todo_res);
+    check_content_type(&list_todo_res);
     assert_eq!(list_todo_res.status(), 200);
     let body = list_todo_res.body().await.unwrap();
     let todos = serde_json::from_slice::<TodoListSchema>(body.to_vec().as_slice()).unwrap();

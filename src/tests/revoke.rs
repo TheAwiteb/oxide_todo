@@ -30,9 +30,9 @@ async fn revoke_with_currect_token() {
     let mut revoke_res = revoke_request(format!("Bearer {}", user.token)).await;
     println!("{revoke_res:?}");
     println!("{:?}", revoke_res.body().await.unwrap());
-    assert_eq!(revoke_res.status(), 200);
     super::check_content_type(&revoke_res);
     super::check_content_length(&revoke_res);
+    assert_eq!(revoke_res.status(), 200);
 }
 
 #[rstest::rstest]
@@ -43,7 +43,7 @@ async fn revoke_with_currect_token() {
 #[serial]
 async fn revoke_endpoin(#[case] token: String, #[case] status_code: u16) {
     let revoke_res = revoke_request(token).await;
-    assert_eq!(revoke_res.status(), status_code);
     super::check_content_type(&revoke_res);
     super::check_content_length(&revoke_res);
+    assert_eq!(revoke_res.status(), status_code);
 }

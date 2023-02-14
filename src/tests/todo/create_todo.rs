@@ -47,9 +47,9 @@ async fn create_todo_endpoint(
     #[case] status_code: u16,
 ) {
     let create_todo_res = create_todo_req(title, status).await;
-    assert_eq!(create_todo_res.status(), status_code);
     check_content_type(&create_todo_res);
     check_content_length(&create_todo_res);
+    assert_eq!(create_todo_res.status(), status_code);
     // if the status code is 200, wait for 1 second to make a time lag to be tested in list todo endpoint
     if status_code == 200 {
         std::thread::sleep(std::time::Duration::from_secs(1));

@@ -64,12 +64,21 @@ async fn delete_todo() {
             .uuid,
     )
     .await;
-    assert_eq!(response.status().as_u16(), 200);
     check_content_type(&response);
     check_content_length(&response);
+    assert_eq!(response.status().as_u16(), 200);
     let todos = get_list().await;
     assert!(
         !todos.data.iter().any(|t| t.title == new_todo_title),
         "The todo was not deleted"
     );
+}
+
+#[actix_web::test]
+#[serial_test::serial]
+async fn delete_invalid_todo() {
+    let response = delete_todo_req(Uuid::new_v4()).await;
+    check_content_type(&response);
+    check_content_length(&response);
+    assert_eq!(response.status().as_u16(), 404);
 }
