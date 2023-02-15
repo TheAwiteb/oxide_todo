@@ -7,11 +7,7 @@ use actix_web::{post, web, HttpRequest};
 use sea_orm::DatabaseConnection;
 
 /// Create a new todo.
-/// Available status:
-/// - `completed`: Completed todo
-/// - `pending`: Pending todo
-/// - `progress`: Progress todo
-/// - `cancelled`: Cancelled todo
+/// Note: Check the `TodoContentSchema` schema (It's the request body)
 #[utoipa::path(
     context_path = "/api/todos",
     request_body = TodoContentSchema,
