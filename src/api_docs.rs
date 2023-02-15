@@ -32,11 +32,14 @@ use utoipa::{Modify, OpenApi};
             crate::schemas::todo::TodoScheam,
             crate::schemas::todo::TodoListSchema,
             crate::schemas::todo::TodoListMetaSchema,
+            // Server metadata
+            crate::schemas::server_metadata::ServerMetadataSchema,
         )
     ),
     tags(
         (name = "Auth", description = "A authentication routes"),
-        (name = "Todo", description = "A todo routes")
+        (name = "Todo", description = "A todo routes"),
+        (name = "Server Metadata", description = "A server metadata routes"),
     ),
     modifiers(&SecurityAddon)
 )]
