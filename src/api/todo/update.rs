@@ -47,7 +47,9 @@ pub async fn update_todo(
     let db = db.as_ref();
     let user = req_auth(req, db).await?;
     let todo = utils::find_todo_by_uuid(*uuid, user.id, db).await?;
-    utils::update_todo(todo, Some(payload.title), Some(payload.status), db)
+    // If the title is not changed, then set it to None. Otherwise, set it to Some(payload.title)
+    let todo_title = todo.title.ne(&payload.title).then_some(payload.title);
+    utils::update_todo(todo, todo_title, Some(payload.status), db)
         .await
         .map(TodoScheam::from)
 }
