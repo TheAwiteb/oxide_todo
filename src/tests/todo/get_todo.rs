@@ -1,4 +1,4 @@
-use crate::schemas::todo::{TodoListSchema, TodoScheam};
+use crate::schemas::todo::{TodoListSchema, TodoSchema};
 use crate::schemas::user::UserSchema;
 use crate::tests::login::login_req;
 use crate::tests::todo::list_todo::list_todo_req;
@@ -49,7 +49,7 @@ async fn get_valid_todo() {
         check_content_length(&response);
         assert_eq!(response.status().as_u16(), 200);
 
-        let todo_from_res: TodoScheam =
+        let todo_from_res: TodoSchema =
             serde_json::from_slice(response.body().await.unwrap().to_vec().as_slice()).unwrap();
         assert_eq!(todo_from_res.uuid, todo.uuid);
         assert_eq!(todo_from_res.title, todo.title);

@@ -2,7 +2,7 @@ use crate::api::auth::utils::req_auth;
 use crate::api::todo::utils;
 use crate::errors::Result as ApiResult;
 use crate::schemas::message::MessageSchema;
-use crate::schemas::todo::{TodoContentSchema, TodoScheam};
+use crate::schemas::todo::{TodoContentSchema, TodoSchema};
 use actix_web::{put, web, HttpRequest};
 use sea_orm::DatabaseConnection;
 use uuid::Uuid;
@@ -42,7 +42,7 @@ pub async fn update_todo(
     payload: web::Json<TodoContentSchema>,
     uuid: web::Path<Uuid>,
     db: web::Data<DatabaseConnection>,
-) -> ApiResult<TodoScheam> {
+) -> ApiResult<TodoSchema> {
     let payload = payload.into_inner();
     let db = db.as_ref();
     let user = req_auth(req, db).await?;
@@ -51,5 +51,5 @@ pub async fn update_todo(
     let todo_title = todo.title.ne(&payload.title).then_some(payload.title);
     utils::update_todo(todo, todo_title, Some(payload.status), db)
         .await
-        .map(TodoScheam::from)
+        .map(TodoSchema::from)
 }

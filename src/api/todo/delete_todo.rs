@@ -10,7 +10,7 @@ use crate::{
     api::auth::utils::req_auth,
     api::todo::utils,
     errors::{ErrorTrait, Result as ApiResult},
-    schemas::{message::MessageSchema, todo::TodoScheam},
+    schemas::{message::MessageSchema, todo::TodoSchema},
 };
 
 /// Delete a single todo by uuid.
@@ -46,7 +46,7 @@ pub async fn delete_todo(
     req: HttpRequest,
     db: web::Data<DatabaseConnection>,
     uuid: Path<Uuid>,
-) -> ApiResult<TodoScheam> {
+) -> ApiResult<TodoSchema> {
     let db = db.get_ref();
     let uuid = uuid.into_inner();
     let user = req_auth(req, db).await?;

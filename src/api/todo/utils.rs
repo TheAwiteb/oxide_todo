@@ -2,7 +2,7 @@ use std::env;
 
 use crate::{
     errors::{Error as ApiError, ErrorTrait, Result as ApiResult},
-    schemas::todo::{TodoContentSchema, TodoScheam},
+    schemas::todo::{TodoContentSchema, TodoSchema},
 };
 use chrono::Utc;
 use entity::todo::{
@@ -139,7 +139,7 @@ pub async fn create_todo(
     db: &DatabaseConnection,
     todo_content: TodoContentSchema,
     user_id: u32,
-) -> ApiResult<TodoScheam> {
+) -> ApiResult<TodoSchema> {
     if todo_content.title.is_empty() {
         return Err(ApiError::BAdRequest("The todo title is empty".to_string()));
     } else if is_todo_title_exists(&todo_content.title, user_id, db).await? {

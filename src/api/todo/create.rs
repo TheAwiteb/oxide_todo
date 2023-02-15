@@ -1,7 +1,7 @@
 use crate::api::auth::utils as auth_utils;
 use crate::api::todo::utils;
 use crate::errors::Result as ApiResult;
-use crate::schemas::todo::TodoScheam;
+use crate::schemas::todo::TodoSchema;
 use crate::schemas::{message::MessageSchema, todo::TodoContentSchema};
 use actix_web::{post, web, HttpRequest};
 use sea_orm::DatabaseConnection;
@@ -43,7 +43,7 @@ pub async fn create(
     req: HttpRequest,
     db: web::Data<DatabaseConnection>,
     payload: web::Json<TodoContentSchema>,
-) -> ApiResult<TodoScheam> {
+) -> ApiResult<TodoSchema> {
     log::info!("Creating a new todo: {}", payload.title);
     let db = db.get_ref();
     let user = auth_utils::req_auth(req, db).await?;

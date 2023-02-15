@@ -5,7 +5,7 @@ use utoipa::ToSchema;
 
 use crate::api::todo::queries::{TodoFilters, TodoOrder, TodoOrderBy};
 
-use super::TodoScheam;
+use super::TodoSchema;
 
 /// The meta data of the todo list
 #[derive(ToSchema, Serialize, Deserialize, Debug, Clone)]
@@ -45,7 +45,7 @@ pub struct TodoListSchema {
     #[schema(
         example = "[{\"uuid\": \"a8bfed8d-4f8b-4150-8ace-3f8916609eba\", \"title\": \"Todo title\", \"status\": \"completed\", \"created_at\": 1620000000, \"updated_at\": 1620000000}]"
     )]
-    pub data: Vec<TodoScheam>,
+    pub data: Vec<TodoSchema>,
     /// The meta data of the list
     #[serde(flatten)]
     pub meta: TodoListMetaSchema,
@@ -69,7 +69,7 @@ impl TodoListMetaSchema {
 
 impl TodoListSchema {
     /// Create a new todo list
-    pub fn new(todos: Vec<TodoScheam>, params: &TodoFilters, total: u64) -> Self {
+    pub fn new(todos: Vec<TodoSchema>, params: &TodoFilters, total: u64) -> Self {
         let count = todos.len() as u64;
         Self {
             data: todos,

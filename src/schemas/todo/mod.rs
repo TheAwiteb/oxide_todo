@@ -11,7 +11,7 @@ use uuid::Uuid;
 
 /// A todo schema
 #[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
-pub struct TodoScheam {
+pub struct TodoSchema {
     /// The id of the todo
     #[schema(value_type = String, example = "a8bfed8d-4f8b-4150-8ace-3f8916609eba")]
     pub uuid: Uuid,
@@ -30,7 +30,7 @@ pub struct TodoScheam {
     pub updated_at: i64,
 }
 
-impl TodoScheam {
+impl TodoSchema {
     /// Create a new todo
     pub fn new(
         uuid: Uuid,
@@ -49,7 +49,7 @@ impl TodoScheam {
     }
 }
 
-impl From<entity::todo::ActiveModel> for TodoScheam {
+impl From<entity::todo::ActiveModel> for TodoSchema {
     fn from(todo: entity::todo::ActiveModel) -> Self {
         Self::new(
             todo.uuid.unwrap(),
@@ -61,7 +61,7 @@ impl From<entity::todo::ActiveModel> for TodoScheam {
     }
 }
 
-impl From<entity::todo::Model> for TodoScheam {
+impl From<entity::todo::Model> for TodoSchema {
     fn from(todo: entity::todo::Model) -> Self {
         Self::new(
             todo.uuid,
@@ -73,7 +73,7 @@ impl From<entity::todo::Model> for TodoScheam {
     }
 }
 
-impl Responder for TodoScheam {
+impl Responder for TodoSchema {
     type Body = BoxBody;
 
     fn respond_to(self, _: &actix_web::HttpRequest) -> actix_web::HttpResponse<Self::Body> {

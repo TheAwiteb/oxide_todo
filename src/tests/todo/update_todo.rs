@@ -1,4 +1,4 @@
-use crate::schemas::todo::TodoScheam;
+use crate::schemas::todo::TodoSchema;
 use crate::schemas::user::UserSchema;
 use crate::tests::login::login_req;
 use crate::tests::{check_content_length, check_content_type, init_test_pool, TestResponseType};
@@ -40,13 +40,13 @@ pub async fn update_todo_req(uuid: Uuid, title: &str, status: &str) -> TestRespo
 #[serial_test::serial]
 async fn update_todo() {
     let mut todo = create_todo_req("new_todo_title".to_owned(), "completed".to_owned()).await;
-    let todo: TodoScheam =
+    let todo: TodoSchema =
         serde_json::from_slice(todo.body().await.unwrap().to_vec().as_slice()).unwrap();
     let mut response = update_todo_req(todo.uuid, "some_new_todo_title", "pending").await;
     check_content_type(&response);
     check_content_length(&response);
     assert_eq!(response.status().as_u16(), 200);
-    let new_todo: TodoScheam =
+    let new_todo: TodoSchema =
         serde_json::from_slice(response.body().await.unwrap().to_vec().as_slice()).unwrap();
     assert_eq!(new_todo.title, "some_new_todo_title");
     assert_eq!(new_todo.status, TodoStatus::Pending);
