@@ -3,7 +3,7 @@ use chrono::Utc;
 use entity::user::Model as UserModel;
 use sea_orm::{ActiveModelTrait, DatabaseConnection, IntoActiveModel, Set};
 
-use crate::auth::utils as auth_utils;
+use crate::api::auth::utils as auth_utils;
 use crate::errors::{ErrorTrait, Result as ApiResult};
 use crate::schemas::user::UserSchema;
 

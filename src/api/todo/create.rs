@@ -1,8 +1,8 @@
-use crate::auth::utils as auth_utils;
+use crate::api::auth::utils as auth_utils;
+use crate::api::todo::utils;
 use crate::errors::Result as ApiResult;
 use crate::schemas::todo::TodoScheam;
 use crate::schemas::{message::MessageSchema, todo::TodoContentSchema};
-use crate::todo::utils;
 use actix_web::{post, web, HttpRequest};
 use sea_orm::DatabaseConnection;
 

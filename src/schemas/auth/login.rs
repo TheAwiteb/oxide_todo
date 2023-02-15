@@ -2,7 +2,7 @@ use sea_orm::DatabaseConnection;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
-use crate::auth::utils as auth_utils;
+use crate::api::auth::utils as auth_utils;
 use crate::errors::Result as ApiResult;
 use crate::schemas::user::UserSchema;
 

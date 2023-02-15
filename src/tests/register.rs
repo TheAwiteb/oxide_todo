@@ -1,7 +1,7 @@
 use actix_web::{web, App};
 
 use super::init_test_pool;
-use crate::{auth, schemas::auth::RegisterSchema};
+use crate::{api::auth, schemas::auth::RegisterSchema};
 
 async fn register_request(username: String, password: String) -> super::TestResponseType {
     let user = RegisterSchema { username, password };

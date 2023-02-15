@@ -7,7 +7,7 @@ use jwt::{header::HeaderType, Header, SignWithKey, Token};
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 use sha2::{Digest, Sha256};
 
-use crate::auth::traits::ClaimsHelper;
+use crate::api::auth::traits::ClaimsHelper;
 use crate::errors::ErrorTrait;
 use crate::errors::{Error as ApiError, Result as ApiResult};
 

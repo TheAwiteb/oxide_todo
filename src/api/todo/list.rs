@@ -1,7 +1,7 @@
-use crate::auth::utils as auth_utils;
+use crate::api::auth::utils as auth_utils;
+use crate::api::todo::queries::TodoFilters;
 use crate::errors::{ErrorTrait, Result as ApiResult};
 use crate::schemas::todo::TodoListSchema;
-use crate::todo::queries::TodoFilters;
 use actix_web::{get, web, HttpRequest};
 use entity::todo::{Column as TodoColumn, Entity as TodoEntity};
 use sea_orm::{

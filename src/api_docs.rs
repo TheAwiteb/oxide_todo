@@ -8,16 +8,16 @@ use utoipa::{Modify, OpenApi};
 #[openapi(
     paths(
         // Auth routes
-        crate::auth::login::login,
-        crate::auth::revoke::revoke,
-        crate::auth::register::register,
+        crate::api::auth::login::login,
+        crate::api::auth::revoke::revoke,
+        crate::api::auth::register::register,
         // Todo routes
-        crate::todo::create::create,
-        crate::todo::list::list,
-        crate::todo::get_todo::get_todo,
-        crate::todo::delete_todo::delete_todo,
-        crate::todo::delete_todos::delete_todos,
-        crate::todo::update::update_todo,
+        crate::api::todo::create::create,
+        crate::api::todo::list::list,
+        crate::api::todo::get_todo::get_todo,
+        crate::api::todo::delete_todo::delete_todo,
+        crate::api::todo::delete_todos::delete_todos,
+        crate::api::todo::update::update_todo,
     ),
     components (
         schemas (

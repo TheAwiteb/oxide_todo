@@ -27,7 +27,7 @@ pub async fn list_todo_req(params: &str) -> TestResponseType {
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .app_data(QueryConfig::default().error_handler(|err, _| ApiError::from(err).into()))
-            .service(web::scope("/todo").service(crate::todo::list::list))
+            .service(web::scope("/todo").service(crate::api::todo::list::list))
     });
     srv.get(format!("/todo?{}", params))
         .insert_header(("Authorization", format!("Bearer {}", user.token)))

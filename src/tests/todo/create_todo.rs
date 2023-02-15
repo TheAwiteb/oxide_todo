@@ -23,7 +23,7 @@ pub async fn create_todo_req(title: String, status: String) -> TestResponseType 
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .app_data(JsonConfig::default().error_handler(|err, _| ApiError::from(err).into()))
-            .service(web::scope("/todo").service(crate::todo::create::create))
+            .service(web::scope("/todo").service(crate::api::todo::create::create))
     });
     srv.post("/todo")
         .insert_header(("Authorization", format!("Bearer {}", user.token)))

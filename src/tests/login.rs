@@ -2,7 +2,7 @@ use actix_web::{web, App};
 use serial_test::serial;
 
 use crate::{
-    auth,
+    api::auth,
     schemas::{auth::LoginSchema, user::UserSchema},
 };
 

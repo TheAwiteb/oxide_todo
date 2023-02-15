@@ -20,7 +20,7 @@ pub async fn delete_todos_req() -> TestResponseType {
     let srv = actix_test::start(move || {
         App::new()
             .app_data(web::Data::new(pool.clone()))
-            .service(web::scope("/todo").service(crate::todo::delete_todos::delete_todos))
+            .service(web::scope("/todo").service(crate::api::todo::delete_todos::delete_todos))
     });
     srv.delete("todo")
         .insert_header(("Authorization", format!("Bearer {}", user.token)))

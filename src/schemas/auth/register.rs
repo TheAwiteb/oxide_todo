@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use sqlx_core::error::Error as SqlxError;
 use utoipa::ToSchema;
 
-use crate::auth::utils as auth_utils;
+use crate::api::auth::utils as auth_utils;
 use crate::errors::{Error as ApiError, Result as ApiResult};
 use crate::schemas::user::UserSchema;
 

@@ -24,7 +24,7 @@ pub async fn update_todo_req(uuid: Uuid, title: &str, status: &str) -> TestRespo
     let srv = actix_test::start(move || {
         App::new()
             .app_data(web::Data::new(pool.clone()))
-            .service(web::scope("/todo").service(crate::todo::update::update_todo))
+            .service(web::scope("/todo").service(crate::api::todo::update::update_todo))
     });
     srv.put(format!("todo/{uuid}"))
         .insert_header(("Authorization", format!("Bearer {}", user.token)))

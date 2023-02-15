@@ -1,7 +1,7 @@
 use actix_web::{web, App};
 use serial_test::serial;
 
-use crate::{auth, schemas::user::UserSchema};
+use crate::{api::auth, schemas::user::UserSchema};
 
 use super::init_test_pool;
 

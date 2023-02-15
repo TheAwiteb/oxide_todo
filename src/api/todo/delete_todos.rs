@@ -3,7 +3,7 @@ use entity::todo::{Column as TodoColumn, Entity as TodoEntity};
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 
 use crate::{
-    auth::utils::req_auth,
+    api::auth::utils::req_auth,
     errors::{ErrorTrait, Result as ApiResult},
     schemas::message::MessageSchema,
 };

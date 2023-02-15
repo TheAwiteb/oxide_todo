@@ -21,7 +21,7 @@ pub async fn get_todo_req(uuid: Uuid) -> TestResponseType {
     let srv = actix_test::start(move || {
         App::new()
             .app_data(web::Data::new(pool.clone()))
-            .service(web::scope("/todo").service(crate::todo::get_todo::get_todo))
+            .service(web::scope("/todo").service(crate::api::todo::get_todo::get_todo))
     });
     srv.get(format!("todo/{uuid}"))
         .insert_header(("Authorization", format!("Bearer {}", user.token)))

@@ -9,12 +9,11 @@ use migration::{Migrator, MigratorTrait};
 use sea_orm::{Database, DatabaseConnection};
 use utoipa_swagger_ui::SwaggerUi;
 
+mod api;
 mod api_docs;
-mod auth;
 mod errors;
 mod ratelimit;
 mod schemas;
-mod todo;
 
 #[cfg(test)]
 mod tests;
@@ -75,8 +74,8 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::default())
             .service(
                 web::scope("/api")
-                    .configure(auth::init_routes)
-                    .configure(todo::init_routes),
+                    .configure(api::auth::init_routes)
+                    .configure(api::todo::init_routes),
             )
             .service(
                 // OpenAPI document

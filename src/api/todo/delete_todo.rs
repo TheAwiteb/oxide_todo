@@ -7,10 +7,10 @@ use sea_orm::{entity::ModelTrait, DatabaseConnection};
 use uuid::Uuid;
 
 use crate::{
-    auth::utils::req_auth,
+    api::auth::utils::req_auth,
+    api::todo::utils,
     errors::{ErrorTrait, Result as ApiResult},
     schemas::{message::MessageSchema, todo::TodoScheam},
-    todo::utils,
 };
 
 /// Delete a single todo by uuid.

@@ -1,21 +1,16 @@
-use actix_web::{
-    get,
-    web::{self, Path},
-    HttpRequest,
-};
+use crate::api::auth::utils::req_auth;
+use crate::api::todo::utils;
+use crate::errors::Result as ApiResult;
+use crate::schemas::message::MessageSchema;
+use crate::schemas::todo::{TodoContentSchema, TodoScheam};
+use actix_web::{put, web, HttpRequest};
 use sea_orm::DatabaseConnection;
 use uuid::Uuid;
 
-use crate::{
-    auth::utils::req_auth,
-    errors::Result as ApiResult,
-    schemas::{message::MessageSchema, todo::TodoScheam},
-    todo::utils,
-};
-
-/// Get a single todo by uuid.
+/// Update a single todo by uuid, only the title and status can be updated.
 #[utoipa::path(
     context_path = "/api/todos",
+    request_body = TodoContentSchema,
     params(
         (
             "uuid", description = "The uuid of the todo", Path,
@@ -24,7 +19,7 @@ use crate::{
     ),
     responses(
         (
-            status = 200, description = "Get a single todo by uuid", body = TodoScheam,
+            status = 200, description = "Update a single todo by uuid", body = TodoScheam,
             example = json!{{
                 "uuid": "b5a5d4e4-7d4e-4f4a-9f3d-3f3f3f3f3f3f",
                 "title": "Buy milk, eggs, and bread",
@@ -41,17 +36,18 @@ use crate::{
     tag = "Todo",
     security(("Bearer Token" = []))
 )]
-#[get("/{uuid}")]
-pub async fn get_todo(
+#[put("/{uuid}")]
+pub async fn update_todo(
     req: HttpRequest,
+    payload: web::Json<TodoContentSchema>,
+    uuid: web::Path<Uuid>,
     db: web::Data<DatabaseConnection>,
-    uuid: Path<Uuid>,
 ) -> ApiResult<TodoScheam> {
-    let db = db.get_ref();
-    let uuid = uuid.into_inner();
+    let payload = payload.into_inner();
+    let db = db.as_ref();
     let user = req_auth(req, db).await?;
-
-    utils::find_todo_by_uuid(uuid, user.id, db)
+    let todo = utils::find_todo_by_uuid(*uuid, user.id, db).await?;
+    utils::update_todo(todo, Some(payload.title), Some(payload.status), db)
         .await
-        .map(From::from)
+        .map(TodoScheam::from)
 }

@@ -3,7 +3,7 @@ use entity::todo::Status as TodoStatus;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
-use crate::todo::queries::{TodoFilters, TodoOrder, TodoOrderBy};
+use crate::api::todo::queries::{TodoFilters, TodoOrder, TodoOrderBy};
 
 use super::TodoScheam;
 
