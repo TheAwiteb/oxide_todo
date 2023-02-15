@@ -16,6 +16,7 @@ jobs:
         with:
           toolchain: 1.65.0
           override: true
+          components: rustfmt, clippy, 
       - uses: extractions/setup-just@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
