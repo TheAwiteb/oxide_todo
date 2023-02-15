@@ -38,6 +38,10 @@ _delete_todo_tests:
 _delete_todos_tests:
     dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::delete_todos:: -- --test-threads 1
 
+# Run update todo tests
+_update_todo_tests:
+    dotenv cargo +1.65.0 test -j 1 --all-features tests::todo::update_todo:: -- --test-threads 1
+
 # Run the tests
 tests:
     # Clean the database
@@ -51,6 +55,7 @@ tests:
     just _get_todo_tests
     just _delete_todo_tests
     just _delete_todos_tests
+    just _update_todo_tests
 
 # Format everything
 fmt:
