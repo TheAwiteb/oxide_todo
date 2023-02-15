@@ -13,7 +13,7 @@ use uuid::Uuid;
     request_body = TodoContentSchema,
     params(
         (
-            "uuid", description = "The uuid of the todo", Path,
+            "uuid", description = "The uuid of the todo",
             example = "b5a5d4e4-7d4e-4f4a-9f3d-3f3f3f3f3f3f"
         )
     ),
