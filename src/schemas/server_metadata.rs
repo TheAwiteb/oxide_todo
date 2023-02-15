@@ -3,6 +3,8 @@ use std::env;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
+use crate::api::todo;
+
 /// Server metadata, helps clients to know what to expect from the server.
 #[derive(Debug, ToSchema, Serialize, Deserialize, Clone)]
 pub struct ServerMetadataSchema {
@@ -11,9 +13,9 @@ pub struct ServerMetadataSchema {
     /// The name of the server
     pub name: String,
     /// The reatelimit burst size
-    pub reatelimit_burst_size: u32,
+    pub reatelimit_burst_size: u16,
     /// The reatelimit reset duration in seconds
-    pub ratelimit_duration: u32,
+    pub ratelimit_duration: u16,
     /// The API contact name
     pub contact_name: String,
     /// The API contact email
@@ -21,9 +23,9 @@ pub struct ServerMetadataSchema {
     /// The API contact website
     pub contact_website: String,
     /// The maximum number of todos a user can have
-    pub max_todos: u32,
+    pub max_todos: u64,
     /// The maximum todo title length
-    pub max_title_length: u32,
+    pub max_title_length: u64,
 }
 
 impl Default for ServerMetadataSchema {
@@ -44,14 +46,8 @@ impl Default for ServerMetadataSchema {
             contact_name: env::var("API_CONTACT_NAME").expect("`API_CONTACT_NAME` must be set"),
             contact_email: env::var("API_CONTACT_EMAIL").expect("`API_CONTACT_EMAIL` must be set"),
             contact_website: env::var("API_CONTACT_URL").expect("`API_CONTACT_URL` must be set"),
-            max_todos: env::var("MAXIMUM_TODO_PER_USER")
-                .unwrap_or_else(|_| "500".to_owned())
-                .parse()
-                .expect("`MAXIMUM_TODO_PER_USER` must be a number"),
-            max_title_length: env::var("MAXIMUM_TODO_TITLE_LENGTH")
-                .unwrap_or_else(|_| "100".to_owned())
-                .parse()
-                .expect("`MAXIMUM_TODO_TITLE_LENGTH` must be a number"),
+            max_todos: todo::utils::max_todos_count(),
+            max_title_length: todo::utils::max_todo_title_length(),
         }
     }
 }
