@@ -18,6 +18,8 @@ use utoipa::{Modify, OpenApi};
         crate::api::todo::delete_todo::delete_todo,
         crate::api::todo::delete_todos::delete_todos,
         crate::api::todo::update::update_todo,
+        // Server metadata
+        crate::api::server_metadata::get_server_metadata,
     ),
     components (
         schemas (
@@ -32,11 +34,14 @@ use utoipa::{Modify, OpenApi};
             crate::schemas::todo::TodoScheam,
             crate::schemas::todo::TodoListSchema,
             crate::schemas::todo::TodoListMetaSchema,
+            // Server metadata
+            crate::schemas::server_metadata::ServerMetadataSchema,
         )
     ),
     tags(
         (name = "Auth", description = "A authentication routes"),
-        (name = "Todo", description = "A todo routes")
+        (name = "Todo", description = "A todo routes"),
+        (name = "Server Metadata", description = "A server metadata routes"),
     ),
     modifiers(&SecurityAddon)
 )]
