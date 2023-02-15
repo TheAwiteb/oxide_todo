@@ -1,3 +1,5 @@
+use std::env;
+
 use crate::{
     errors::{Error as ApiError, ErrorTrait, Result as ApiResult},
     schemas::todo::{TodoContentSchema, TodoScheam},
@@ -8,7 +10,8 @@ use entity::todo::{
     Status as TodoStatus,
 };
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, Select, Set,
+    ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, PaginatorTrait, QueryFilter,
+    Select, Set,
 };
 use uuid::Uuid;
 
@@ -47,6 +50,22 @@ where
             ));
         }
     }
+}
+
+/// Returns the maximum number of todos that can be created by a user
+pub fn max_todos_count() -> u64 {
+    env::var("MAXIMUM_TODO_PER_USER")
+        .unwrap_or_else(|_| "500".to_string())
+        .parse()
+        .unwrap_or(500)
+}
+
+/// Returns the maximum todo title length that can be created by a user
+pub fn max_todo_title_length() -> u64 {
+    env::var("MAXIMUM_TODO_TITLE_LENGTH")
+        .unwrap_or_else(|_| "100".to_string())
+        .parse()
+        .unwrap_or(100)
 }
 
 /// Returns whether if there is a todo with the given title and user id
@@ -97,6 +116,11 @@ pub async fn update_todo(
                 "The todo `{}` is already exists",
                 title
             )));
+        } else if title.chars().count() > max_todo_title_length() as usize {
+            return Err(ApiError::BAdRequest(format!(
+                "The todo title length must be less than {}",
+                max_todo_title_length()
+            )));
         }
     }
     NewTodo {
@@ -122,6 +146,22 @@ pub async fn create_todo(
         return Err(ApiError::BAdRequest(format!(
             "The todo `{}` is already exists",
             todo_content.title
+        )));
+    } else if todo_content.title.chars().count() > max_todo_title_length() as usize {
+        return Err(ApiError::BAdRequest(format!(
+            "The todo title length must be less than {}",
+            max_todo_title_length()
+        )));
+    } else if TodoEntity::find()
+        .filter(TodoColumn::UserId.eq(user_id))
+        .count(db)
+        .await
+        .database_err()?
+        > max_todos_count()
+    {
+        return Err(ApiError::BAdRequest(format!(
+            "The maximum number of todos is {}",
+            max_todos_count()
         )));
     }
 
