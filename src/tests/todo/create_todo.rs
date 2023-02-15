@@ -1,3 +1,5 @@
+use crate::errors::Error as ApiError;
+use actix_web::web::JsonConfig;
 use actix_web::{web, App};
 use serde_json::json;
 
@@ -20,6 +22,7 @@ pub async fn create_todo_req(title: String, status: String) -> TestResponseType 
     let srv = actix_test::start(move || {
         App::new()
             .app_data(web::Data::new(pool.clone()))
+            .app_data(JsonConfig::default().error_handler(|err, _| ApiError::from(err).into()))
             .service(web::scope("/todo").service(crate::todo::create::create))
     });
     srv.post("/todo")
