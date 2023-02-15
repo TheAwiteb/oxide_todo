@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[sea_orm(rs_type = "String", db_type = "String(Some(1))")]
+#[serde(rename_all = "lowercase")]
 /// The todo status
 pub enum Status {
     /// Completed todo
@@ -39,12 +40,12 @@ impl FromStr for Status {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
+        match s.to_lowercase().trim() {
             "completed" => Ok(Self::Completed),
             "pending" => Ok(Self::Pending),
             "progress" => Ok(Self::Progress),
             "cancelled" => Ok(Self::Cancelled),
-            _ => Err(format!("The status `{s}` is invalid")),
+            _ => Err(format!("The status `{s}` is invalid, expected `completed`, `pending`, `progress` or `cancelled`")),
         }
     }
 }
@@ -54,6 +55,8 @@ impl FromStr for Status {
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: u32,
+    #[sea_orm(unique_key)]
+    pub uuid: Uuid,
     pub user_id: u32,
     pub title: String,
     pub status: Status,

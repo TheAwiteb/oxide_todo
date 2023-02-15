@@ -8,8 +8,8 @@ use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 use sha2::{Digest, Sha256};
 
 use crate::auth::traits::ClaimsHelper;
-use crate::errors::TodoError as TodoErrorTrait;
-use crate::errors::{Error as TodoError, Result as TodoResult};
+use crate::errors::ErrorTrait;
+use crate::errors::{Error as ApiError, Result as ApiResult};
 
 /// Hash given data by sha256 algorithm.
 pub fn hash_function(data: &str) -> String {
@@ -20,7 +20,7 @@ pub fn hash_function(data: &str) -> String {
 /// ### Arguments
 /// * `user_id` - The id of the user
 /// * `created_date` - The timestamp of the token created, to add it to JWT payload
-pub fn generate_token(user_id: u32, created_date: i64) -> TodoResult<String> {
+pub fn generate_token(user_id: u32, created_date: i64) -> ApiResult<String> {
     let secret = std::env::var("SECRET_KEY").expect("SECRET_KEY must be set");
     let str_id = user_id.to_string();
     let str_timestamp = created_date.to_string();
@@ -42,7 +42,7 @@ pub fn generate_token(user_id: u32, created_date: i64) -> TodoResult<String> {
 /// - User not found
 /// - Token is invalid
 /// - Token is was revoked
-pub async fn get_user_by_token(db: &DatabaseConnection, token: &str) -> TodoResult<UserModel> {
+pub async fn get_user_by_token(db: &DatabaseConnection, token: &str) -> ApiResult<UserModel> {
     let secret = std::env::var("SECRET_KEY").expect("SECRET_KEY must be set");
     let key: Hmac<Sha256> = Hmac::new_from_slice(secret.as_bytes()).key_creation_err()?;
     let claims = jwt::VerifyWithKey::<Token<Header, BTreeMap<String, String>, _>>::verify_with_key(
@@ -58,7 +58,7 @@ pub async fn get_user_by_token(db: &DatabaseConnection, token: &str) -> TodoResu
         .incorrect_user_err()?;
 
     if claims.get_created_at() != user.token_created_at {
-        Err(TodoError::Forbidden("Token has been revoked".to_owned()))
+        Err(ApiError::Forbidden("Token has been revoked".to_owned()))
     } else {
         Ok(user)
     }
@@ -69,9 +69,9 @@ pub async fn get_user_by_username_and_password(
     db: &DatabaseConnection,
     username: &str,
     password: &str,
-) -> TodoResult<UserModel> {
+) -> ApiResult<UserModel> {
     if username.is_empty() || password.is_empty() {
-        return Err(TodoError::BAdRequest(
+        return Err(ApiError::BAdRequest(
             "Invalid username or password, must be not empty".to_owned(),
         ));
     }
@@ -91,7 +91,7 @@ pub async fn get_user_by_username_and_password(
 }
 
 /// Extract the token from the request header.
-pub fn extract_token(req: &HttpRequest) -> TodoResult<String> {
+pub fn extract_token(req: &HttpRequest) -> ApiResult<String> {
     req.headers()
         .get("Authorization")
         .map(|token| token.to_str().map(|token| token.strip_prefix("Bearer ")))
@@ -102,7 +102,7 @@ pub fn extract_token(req: &HttpRequest) -> TodoResult<String> {
 }
 
 /// Return user model by given request
-pub async fn req_auth(req: HttpRequest, db: &DatabaseConnection) -> TodoResult<UserModel> {
+pub async fn req_auth(req: HttpRequest, db: &DatabaseConnection) -> ApiResult<UserModel> {
     let token = extract_token(&req)?;
 
     get_user_by_token(db, &token).await

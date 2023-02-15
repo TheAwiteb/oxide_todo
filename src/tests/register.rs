@@ -27,7 +27,7 @@ async fn register_endpoint(
     #[case] status_code: u16,
 ) {
     let res = register_request(username, password).await;
-    assert_eq!(res.status(), status_code);
     super::check_content_type(&res);
     super::check_content_length(&res);
+    assert_eq!(res.status(), status_code);
 }

@@ -9,7 +9,7 @@ RESTful Todo API with [Actix](https://actix.rs) and [SeaORM](https://www.sea-ql.
 </div>
 
 ### Prerequisites
-- [Rust](https://www.rust-lang.org/tools/install)
+- [Rust](https://www.rust-lang.org/tools/install) (Minimum Supported Rust Version: 1.65.0)
 
 ### Usage
 Clone the repository and run the following commands:
@@ -23,8 +23,8 @@ RUST_LOG=debug cargo run
 ```
 
 ### Documentation
-- The API documentation is available at `{HOST}:{PORT}/docs/swagger/` (default: [http://localhost:8080/docs/swagger](http://localhost:8080/docs/swagger/))
-- The OpenAPI specification is available at `{HOST}:{PORT}/docs/openapi.json` (default: [http://localhost:8080/docs/openapi.json](http://localhost:8080/docs/openapi.json)) 
+- The API documentation is available at `{HOST}:{PORT}/docs/swagger/` (default: <http://localhost:8080/docs/swagger/>)
+- The OpenAPI specification is available at `{HOST}:{PORT}/docs/openapi.json` (default: <http://localhost:8080/docs/openapi.json>) 
 
 ### Environment variables
 Rename the `.env.example` file to `.env` and change the values to your needs. Empty default means that the variable is required.
@@ -44,13 +44,13 @@ Rename the `.env.example` file to `.env` and change the values to your needs. Em
 
 ### Testing
 #### Prerequisites
-- [dotenv cli](https://pypi.org/project/python-dotenv/)
+- [dotenv-cli](https://pypi.org/project/dotenv-cli/)
 - [just](https://github.com/casey/just)
 ```bash
 just tests
 ```
 ### Development
-For development you need to install [just](https://github.com/casey/just) and [dotenv cli](https://pypi.org/project/python-dotenv/).
+For development you need to install [just](https://github.com/casey/just) and [dotenv-cli](https://pypi.org/project/dotenv-cli/).
 With `just` you can run all needed commands with one command, type `just` folloing by the command you want to run.<br>
 Available commands:
 - `just build` to build the RESTful API

@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 use crate::auth::utils as auth_utils;
-use crate::errors::Result as TodoResult;
+use crate::errors::Result as ApiResult;
 
 /// The schema of the user response
 #[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
@@ -34,12 +34,12 @@ impl UserSchema {
     }
 
     #[allow(dead_code)]
-    pub async fn try_into_model(self, db: &DatabaseConnection) -> TodoResult<UserModel> {
+    pub async fn try_into_model(self, db: &DatabaseConnection) -> ApiResult<UserModel> {
         auth_utils::get_user_by_token(db, &self.token).await
     }
 
     /// Create a user schema from a user active model, will generate a token
-    pub fn try_from_active_model(user: ActiveModel) -> TodoResult<Self> {
+    pub fn try_from_active_model(user: ActiveModel) -> ApiResult<Self> {
         // Here `unwrap` means extrct the value from the `ActiveValue`
         // See https://docs.rs/sea-orm/0.10.4/sea_orm/entity/enum.ActiveValue.html#method.unwrap
         auth_utils::generate_token(user.id.unwrap(), user.token_created_at.unwrap())
@@ -47,7 +47,7 @@ impl UserSchema {
     }
 
     /// Create a user schema from a user model, will generate a token
-    pub fn try_from_model(user: UserModel) -> TodoResult<Self> {
+    pub fn try_from_model(user: UserModel) -> ApiResult<Self> {
         auth_utils::generate_token(user.id, user.token_created_at)
             .map(|token| Self::new(user.name, token))
     }

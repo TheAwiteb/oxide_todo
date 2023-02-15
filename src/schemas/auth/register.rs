@@ -9,7 +9,7 @@ use sqlx_core::error::Error as SqlxError;
 use utoipa::ToSchema;
 
 use crate::auth::utils as auth_utils;
-use crate::errors::{Error as TodoError, Result as TodoResult};
+use crate::errors::{Error as ApiError, Result as ApiResult};
 use crate::schemas::user::UserSchema;
 
 #[derive(Debug, Serialize, Deserialize, Clone, ToSchema)]
@@ -23,9 +23,9 @@ pub struct RegisterSchema {
 }
 
 impl RegisterSchema {
-    pub async fn create(&self, db: &DatabaseConnection) -> TodoResult<UserSchema> {
+    pub async fn create(&self, db: &DatabaseConnection) -> ApiResult<UserSchema> {
         if self.username.is_empty() || self.password.is_empty() {
-            return Err(TodoError::BAdRequest(
+            return Err(ApiError::BAdRequest(
                 "Invalid username or password, must be not empty".to_owned(),
             ));
         }
@@ -45,13 +45,13 @@ impl RegisterSchema {
         .map_err(|db_err| {
             if let DbErr::Exec(RuntimeErr::SqlxError(SqlxError::Database(e))) = db_err {
                 if e.code() == Some(Cow::Borrowed("2067")) {
-                    return TodoError::BAdRequest(format!(
+                    return ApiError::BAdRequest(format!(
                         "Username {} already exists",
                         self.username
                     ));
                 }
             }
-            TodoError::InternalServer("Database error ):".to_owned())
+            ApiError::InternalServer("Database error ):".to_owned())
         })?;
 
         UserSchema::try_from_active_model(user)

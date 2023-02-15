@@ -3,6 +3,7 @@ use migration::{Migrator, MigratorTrait};
 mod login;
 mod register;
 mod revoke;
+mod todo;
 
 pub type TestResponseType = awc::ClientResponse<
     actix_web::dev::Decompress<

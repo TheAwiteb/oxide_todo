@@ -1,8 +1,11 @@
 use actix_web::{
-    body::BoxBody, http::StatusCode, HttpRequest, HttpResponse, Responder, ResponseError,
+    body::BoxBody,
+    error::{JsonPayloadError, QueryPayloadError},
+    http::StatusCode,
+    HttpRequest, HttpResponse, Responder, ResponseError,
 };
 
-use crate::schemas::errors::ErrorSchema;
+use crate::schemas::message::MessageSchema;
 
 #[derive(thiserror::Error, Debug, Clone)]
 pub enum Error {
@@ -20,7 +23,7 @@ pub enum Error {
     TooManyRequests(u64),
 }
 
-pub trait TodoError {
+pub trait ErrorTrait {
     type Output;
 
     fn server_err(self, message: &str) -> Self::Output;
@@ -35,7 +38,7 @@ pub trait TodoError {
     fn incorrect_user_err(self) -> Self::Output;
 }
 
-impl<T, E> TodoError for std::result::Result<T, E> {
+impl<T, E> ErrorTrait for std::result::Result<T, E> {
     type Output = Result<T>;
 
     fn server_err(self, message: &str) -> Self::Output {
@@ -59,7 +62,7 @@ impl<T, E> TodoError for std::result::Result<T, E> {
     }
 
     fn already_username_err(self, username: &str) -> Self::Output {
-        self.bad_request_err(&format!("Username `{}` already exists", username))
+        self.bad_request_err(&format!("Username `{username}` already exists"))
     }
 
     fn key_creation_err(self) -> Self::Output {
@@ -75,7 +78,7 @@ impl<T, E> TodoError for std::result::Result<T, E> {
     }
 }
 
-impl<T> TodoError for Option<T> {
+impl<T> ErrorTrait for Option<T> {
     type Output = Result<T>;
 
     fn server_err(self, message: &str) -> Self::Output {
@@ -115,6 +118,29 @@ impl<T> TodoError for Option<T> {
     }
 }
 
+impl From<QueryPayloadError> for Error {
+    fn from(err: QueryPayloadError) -> Self {
+        match err {
+            QueryPayloadError::Deserialize(err) => Self::BAdRequest(err.to_string()),
+            _ => Self::BAdRequest("The parameters query are invalid".to_string()),
+        }
+    }
+}
+
+impl From<JsonPayloadError> for Error {
+    fn from(err: JsonPayloadError) -> Self {
+        match err {
+            JsonPayloadError::ContentType => {
+                Self::BAdRequest("The content type is not `application/json`".to_string())
+            }
+            JsonPayloadError::Deserialize(err) => {
+                Self::BAdRequest(format!("The request body is invalid: {err}"))
+            }
+            _ => Self::BAdRequest("The request body is invalid".to_string()),
+        }
+    }
+}
+
 impl ResponseError for Error {
     fn status_code(&self) -> StatusCode {
         match self {
@@ -128,7 +154,7 @@ impl ResponseError for Error {
     }
 
     fn error_response(&self) -> HttpResponse {
-        HttpResponse::build(self.status_code()).json(ErrorSchema::from(self.clone()))
+        HttpResponse::build(self.status_code()).json(MessageSchema::from(self.clone()))
     }
 }
 

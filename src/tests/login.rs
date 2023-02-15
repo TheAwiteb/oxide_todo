@@ -30,9 +30,9 @@ async fn login_endpoint(
     #[case] status_code: u16,
 ) {
     let res = login_req(username, password).await;
-    assert_eq!(res.status(), status_code);
     super::check_content_type(&res);
     super::check_content_length(&res);
+    assert_eq!(res.status(), status_code);
 }
 
 /// Deserialize the login response body, and check if the token is not empty
