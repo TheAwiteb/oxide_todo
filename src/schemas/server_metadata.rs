@@ -9,22 +9,31 @@ use crate::api::todo;
 #[derive(Debug, ToSchema, Serialize, Deserialize, Clone)]
 pub struct ServerMetadataSchema {
     /// The version of the server
+    #[schema(example = "0.1.0")]
     pub version: String,
     /// The name of the server
+    #[schema(example = "RESTful Todo API")]
     pub name: String,
     /// The reatelimit burst size
+    #[schema(example = "30")]
     pub reatelimit_burst_size: u16,
     /// The reatelimit reset duration in seconds
+    #[schema(example = "60")]
     pub ratelimit_duration: u16,
     /// The API contact name
+    #[schema(example = "Github")]
     pub contact_name: String,
     /// The API contact email
+    #[schema(example = "yes@is-real.email")]
     pub contact_email: String,
     /// The API contact website
+    #[schema(example = "https://is-real.email")]
     pub contact_website: String,
     /// The maximum number of todos a user can have
+    #[schema(example = "100")]
     pub max_todos: u64,
     /// The maximum todo title length
+    #[schema(example = "100")]
     pub max_title_length: u64,
 }
 
