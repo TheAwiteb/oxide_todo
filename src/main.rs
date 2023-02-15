@@ -72,11 +72,8 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(pool.clone()))
             .wrap(ratelimit_middleware_builder.build())
             .wrap(Logger::default())
-            .service(
-                web::scope("/api")
-                    .configure(api::auth::init_routes)
-                    .configure(api::todo::init_routes),
-            )
+            // Initialize all API endpoints
+            .configure(api::init_routes)
             .service(
                 // OpenAPI document
                 web::scope("/docs").service(api_docs::openapi_json).service(
