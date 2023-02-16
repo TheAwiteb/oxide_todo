@@ -15,7 +15,7 @@ use crate::schemas::{
     responses(
         (
             status = 200, description = "Login successfully and return a new token", body = UserSchema,
-            example = json!(UserSchema::example())
+            example = json!(UserSchema::openapi_example())
         ),
         (
             status = 400, description = "The username or password is incorrect", body = MessageSchema,

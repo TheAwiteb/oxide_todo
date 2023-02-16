@@ -20,7 +20,7 @@ use uuid::Uuid;
     responses(
         (
             status = 200, description = "Update a single todo by uuid", body = TodoScheam,
-            example = json!(TodoSchema::example())
+            example = json!(TodoSchema::openapi_example())
         ),
         (
             status = 404, description = "There is no todo with the given uuid", body = MessageSchema,

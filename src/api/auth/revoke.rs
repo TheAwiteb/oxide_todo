@@ -24,7 +24,7 @@ pub async fn revoke_token(db: &DatabaseConnection, user: UserModel) -> ApiResult
     responses(
         (
             status = 200, description = "Revoke the previous tokens and return a new token", body = UserSchema,
-            example = json!(UserSchema::example())
+            example = json!(UserSchema::openapi_example())
         )
     ),
     tag = "Auth",

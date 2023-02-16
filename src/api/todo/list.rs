@@ -16,7 +16,7 @@ use sea_orm::{
     responses(
         (
             status = 200, description = "List todos", body = TodoListSchema,
-            example = json!(TodoListSchema::example())
+            example = json!(TodoListSchema::openapi_example())
         )
     ),
     tag = "Todo",

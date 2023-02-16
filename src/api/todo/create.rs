@@ -15,7 +15,7 @@ use sea_orm::DatabaseConnection;
     responses(
         (
             status = 200, description = "Create a new todo", body = TodoSchema,
-            example = json!(TodoSchema::example())
+            example = json!(TodoSchema::openapi_example())
         ),
         (
             status = 400, description = "The title is empty", body = MessageSchema,

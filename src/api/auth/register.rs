@@ -15,7 +15,7 @@ use crate::schemas::{
     responses(
         (
             status = 201, description = "Register successfully and return a new token", body = UserSchema,
-            example = json!(UserSchema::example())
+            example = json!(UserSchema::openapi_example())
         ),
         (
             status = 400, description = "The username is not unique", body = MessageSchema,
