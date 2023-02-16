@@ -1,7 +1,9 @@
 use actix_web::{http::StatusCode, post, web, Responder};
 use sea_orm::DatabaseConnection;
 
-use crate::schemas::{auth::RegisterSchema, message::MessageSchema};
+use crate::schemas::{
+    auth::RegisterSchema, message::MessageSchema, traits::OpenApiExample, user::UserSchema,
+};
 
 /// Register a new user, will return the new token for the user.
 ///
@@ -12,7 +14,8 @@ use crate::schemas::{auth::RegisterSchema, message::MessageSchema};
     request_body = RegisterSchema,
     responses(
         (
-            status = 201, description = "Register successfully and return a new token", body = UserSchema
+            status = 201, description = "Register successfully and return a new token", body = UserSchema,
+            example = json!(UserSchema::example())
         ),
         (
             status = 400, description = "The username is not unique", body = MessageSchema,

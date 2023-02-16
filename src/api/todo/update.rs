@@ -1,8 +1,8 @@
 use crate::api::auth::utils::req_auth;
 use crate::api::todo::utils;
 use crate::errors::Result as ApiResult;
-use crate::schemas::message::MessageSchema;
 use crate::schemas::todo::{TodoContentSchema, TodoSchema};
+use crate::schemas::{message::MessageSchema, traits::OpenApiExample};
 use actix_web::{put, web, HttpRequest};
 use sea_orm::DatabaseConnection;
 use uuid::Uuid;
@@ -20,13 +20,7 @@ use uuid::Uuid;
     responses(
         (
             status = 200, description = "Update a single todo by uuid", body = TodoScheam,
-            example = json!{{
-                "uuid": "b5a5d4e4-7d4e-4f4a-9f3d-3f3f3f3f3f3f",
-                "title": "Buy milk, eggs, and bread",
-                "status": "completed",
-                "created_at": 1615657387,
-                "updated_at": 1615657387,
-            }}
+            example = json!(TodoSchema::example())
         ),
         (
             status = 404, description = "There is no todo with the given uuid", body = MessageSchema,
