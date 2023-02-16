@@ -49,6 +49,18 @@ impl TodoSchema {
     }
 }
 
+impl Default for TodoSchema {
+    fn default() -> Self {
+        Self::new(
+            Uuid::new_v4(),
+            "Todo title".to_string(),
+            TodoStatus::Completed,
+            1620000000,
+            1620000000,
+        )
+    }
+}
+
 impl From<entity::todo::ActiveModel> for TodoSchema {
     fn from(todo: entity::todo::ActiveModel) -> Self {
         Self::new(

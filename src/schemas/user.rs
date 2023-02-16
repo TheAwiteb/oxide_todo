@@ -59,6 +59,12 @@ impl UserSchema {
     }
 }
 
+impl Default for UserSchema {
+    fn default() -> Self {
+        Self::new("Awiteb".to_string(), "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdXN0IjoidGVzdCJ9.rCOJrqm0MQvxTcNyyXJdqI7smV7VNvAJZ02LslGkL78".to_string())
+    }
+}
+
 impl Responder for UserSchema {
     type Body = BoxBody;
 
