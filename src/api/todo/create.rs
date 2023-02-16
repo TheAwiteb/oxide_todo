@@ -2,6 +2,7 @@ use crate::api::auth::utils as auth_utils;
 use crate::api::todo::utils;
 use crate::errors::Result as ApiResult;
 use crate::schemas::todo::TodoSchema;
+use crate::schemas::traits::OpenApiExample;
 use crate::schemas::{message::MessageSchema, todo::TodoContentSchema};
 use actix_web::{post, web, HttpRequest};
 use sea_orm::DatabaseConnection;
@@ -14,13 +15,7 @@ use sea_orm::DatabaseConnection;
     responses(
         (
             status = 200, description = "Create a new todo", body = TodoSchema,
-            example = json!{{
-                "uuid": "b5a5d4e4-7d4e-4f4a-9f3d-3f3f3f3f3f3f",
-                "title": "Buy milk, eggs, and bread",
-                "status": "completed",
-                "created_at": 1615657387,
-                "updated_at": 1615657387,
-            }}
+            example = json!(TodoSchema::openapi_example())
         ),
         (
             status = 400, description = "The title is empty", body = MessageSchema,

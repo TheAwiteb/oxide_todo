@@ -78,6 +78,12 @@ impl TodoListSchema {
     }
 }
 
+impl Default for TodoListSchema {
+    fn default() -> Self {
+        Self::new(vec![TodoSchema::default()], &TodoFilters::default(), 1)
+    }
+}
+
 impl Responder for TodoListSchema {
     type Body = BoxBody;
 

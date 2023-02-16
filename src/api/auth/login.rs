@@ -1,7 +1,9 @@
 use actix_web::{post, web, Responder};
 use sea_orm::DatabaseConnection;
 
-use crate::schemas::{auth::LoginSchema, message::MessageSchema};
+use crate::schemas::{
+    auth::LoginSchema, message::MessageSchema, traits::OpenApiExample, user::UserSchema,
+};
 
 /// Login a user
 ///
@@ -12,7 +14,8 @@ use crate::schemas::{auth::LoginSchema, message::MessageSchema};
     request_body = LoginSchema,
     responses(
         (
-            status = 200, description = "Login successfully and return a new token", body = UserSchema
+            status = 200, description = "Login successfully and return a new token", body = UserSchema,
+            example = json!(UserSchema::openapi_example())
         ),
         (
             status = 400, description = "The username or password is incorrect", body = MessageSchema,

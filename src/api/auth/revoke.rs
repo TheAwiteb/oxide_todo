@@ -5,6 +5,7 @@ use sea_orm::{ActiveModelTrait, DatabaseConnection, IntoActiveModel, Set};
 
 use crate::api::auth::utils as auth_utils;
 use crate::errors::{ErrorTrait, Result as ApiResult};
+use crate::schemas::traits::OpenApiExample;
 use crate::schemas::user::UserSchema;
 
 /// Revoke a token by user, will return the new token
@@ -22,7 +23,8 @@ pub async fn revoke_token(db: &DatabaseConnection, user: UserModel) -> ApiResult
     context_path = "/api/auth",
     responses(
         (
-            status = 200, description = "Revoke the previous tokens and return a new token", body = UserSchema
+            status = 200, description = "Revoke the previous tokens and return a new token", body = UserSchema,
+            example = json!(UserSchema::openapi_example())
         )
     ),
     tag = "Auth",

@@ -10,7 +10,7 @@ use crate::{
     api::auth::utils::req_auth,
     api::todo::utils,
     errors::{ErrorTrait, Result as ApiResult},
-    schemas::{message::MessageSchema, todo::TodoSchema},
+    schemas::{message::MessageSchema, todo::TodoSchema, traits::OpenApiExample},
 };
 
 /// Delete a single todo by uuid.
@@ -25,13 +25,7 @@ use crate::{
     responses(
         (
             status = 200, description = "Delete a single todo by uuid", body = TodoScheam,
-            example = json!{{
-                "uuid": "b5a5d4e4-7d4e-4f4a-9f3d-3f3f3f3f3f3f",
-                "title": "Buy milk, eggs, and bread",
-                "status": "completed",
-                "created_at": 1615657387,
-                "updated_at": 1615657387,
-            }}
+            example = json!(TodoSchema::openapi_example())
         ),
         (
             status = 404, description = "There is no todo with the given uuid", body = MessageSchema,

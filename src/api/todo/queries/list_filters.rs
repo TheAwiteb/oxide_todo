@@ -75,6 +75,19 @@ impl TodoFilters {
     }
 }
 
+impl Default for TodoFilters {
+    fn default() -> Self {
+        Self {
+            status: None,
+            title: None,
+            order_by: Some(TodoOrderBy::default()),
+            order: Some(TodoOrder::default()),
+            offset: Some(0),
+            limit: Some(10),
+        }
+    }
+}
+
 impl From<TodoOrder> for Order {
     fn from(order: TodoOrder) -> Self {
         match order {
