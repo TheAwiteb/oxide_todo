@@ -71,7 +71,7 @@ pub async fn get_user_by_username_and_password(
     password: &str,
 ) -> ApiResult<UserModel> {
     if username.is_empty() || password.is_empty() {
-        return Err(ApiError::BAdRequest(
+        return Err(ApiError::BadRequest(
             "Invalid username or password, must be not empty".to_owned(),
         ));
     }

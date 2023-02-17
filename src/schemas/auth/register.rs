@@ -25,7 +25,7 @@ pub struct RegisterSchema {
 impl RegisterSchema {
     pub async fn create(&self, db: &DatabaseConnection) -> ApiResult<UserSchema> {
         if self.username.is_empty() || self.password.is_empty() {
-            return Err(ApiError::BAdRequest(
+            return Err(ApiError::BadRequest(
                 "Invalid username or password, must be not empty".to_owned(),
             ));
         }
@@ -45,7 +45,7 @@ impl RegisterSchema {
         .map_err(|db_err| {
             if let DbErr::Exec(RuntimeErr::SqlxError(SqlxError::Database(e))) = db_err {
                 if e.code() == Some(Cow::Borrowed("2067")) {
-                    return ApiError::BAdRequest(format!(
+                    return ApiError::BadRequest(format!(
                         "Username {} already exists",
                         self.username
                     ));

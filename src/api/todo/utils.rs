@@ -110,14 +110,14 @@ pub async fn update_todo(
 ) -> ApiResult<TodoModel> {
     if let Some(title) = &title {
         if title.is_empty() {
-            return Err(ApiError::BAdRequest("The todo title is empty".to_string()));
+            return Err(ApiError::BadRequest("The todo title is empty".to_string()));
         } else if is_todo_title_exists(title, todo.user_id, db).await? {
-            return Err(ApiError::BAdRequest(format!(
+            return Err(ApiError::BadRequest(format!(
                 "The todo `{}` is already exists",
                 title
             )));
         } else if title.chars().count() > max_todo_title_length() as usize {
-            return Err(ApiError::BAdRequest(format!(
+            return Err(ApiError::BadRequest(format!(
                 "The todo title length must be less than {}",
                 max_todo_title_length()
             )));
@@ -141,14 +141,14 @@ pub async fn create_todo(
     user_id: u32,
 ) -> ApiResult<TodoSchema> {
     if todo_content.title.is_empty() {
-        return Err(ApiError::BAdRequest("The todo title is empty".to_string()));
+        return Err(ApiError::BadRequest("The todo title is empty".to_string()));
     } else if is_todo_title_exists(&todo_content.title, user_id, db).await? {
-        return Err(ApiError::BAdRequest(format!(
+        return Err(ApiError::BadRequest(format!(
             "The todo `{}` is already exists",
             todo_content.title
         )));
     } else if todo_content.title.chars().count() > max_todo_title_length() as usize {
-        return Err(ApiError::BAdRequest(format!(
+        return Err(ApiError::BadRequest(format!(
             "The todo title length must be less than {}",
             max_todo_title_length()
         )));
@@ -159,7 +159,7 @@ pub async fn create_todo(
         .database_err()?
         > max_todos_count()
     {
-        return Err(ApiError::BAdRequest(format!(
+        return Err(ApiError::BadRequest(format!(
             "The maximum number of todos is {}",
             max_todos_count()
         )));

@@ -12,7 +12,7 @@ pub enum Error {
     #[error("{0}")]
     InternalServer(String),
     #[error("{0}")]
-    BAdRequest(String),
+    BadRequest(String),
     #[error("{0}")]
     NotFound(String),
     #[error("{0}")]
@@ -46,7 +46,7 @@ impl<T, E> ErrorTrait for std::result::Result<T, E> {
     }
 
     fn bad_request_err(self, message: &str) -> Self::Output {
-        self.map_err(|_| Error::BAdRequest(message.to_string()))
+        self.map_err(|_| Error::BadRequest(message.to_string()))
     }
 
     fn not_found_err(self, message: &str) -> Self::Output {
@@ -121,8 +121,8 @@ impl<T> ErrorTrait for Option<T> {
 impl From<QueryPayloadError> for Error {
     fn from(err: QueryPayloadError) -> Self {
         match err {
-            QueryPayloadError::Deserialize(err) => Self::BAdRequest(err.to_string()),
-            _ => Self::BAdRequest("The parameters query are invalid".to_string()),
+            QueryPayloadError::Deserialize(err) => Self::BadRequest(err.to_string()),
+            _ => Self::BadRequest("The parameters query are invalid".to_string()),
         }
     }
 }
@@ -131,12 +131,12 @@ impl From<JsonPayloadError> for Error {
     fn from(err: JsonPayloadError) -> Self {
         match err {
             JsonPayloadError::ContentType => {
-                Self::BAdRequest("The content type is not `application/json`".to_string())
+                Self::BadRequest("The content type is not `application/json`".to_string())
             }
             JsonPayloadError::Deserialize(err) => {
-                Self::BAdRequest(format!("The request body is invalid: {err}"))
+                Self::BadRequest(format!("The request body is invalid: {err}"))
             }
-            _ => Self::BAdRequest("The request body is invalid".to_string()),
+            _ => Self::BadRequest("The request body is invalid".to_string()),
         }
     }
 }
@@ -145,7 +145,7 @@ impl ResponseError for Error {
     fn status_code(&self) -> StatusCode {
         match self {
             Self::InternalServer(_) => StatusCode::INTERNAL_SERVER_ERROR,
-            Self::BAdRequest(_) => StatusCode::BAD_REQUEST,
+            Self::BadRequest(_) => StatusCode::BAD_REQUEST,
             Self::NotFound(_) => StatusCode::NOT_FOUND,
             Self::Forbidden(_) => StatusCode::FORBIDDEN,
             Self::Unauthorized(_) => StatusCode::UNAUTHORIZED,
