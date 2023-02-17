@@ -2,7 +2,7 @@
 members = [ ".", "migration", "entity"]
 
 [package]
-name = "restful_todo"
+name = "oxide_todo"
 version = "0.2.0"
 edition = "2021"
 publish = false

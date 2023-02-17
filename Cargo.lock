@@ -1659,6 +1659,38 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b15813163c1d831bf4a13c3610c05c0d03b39feb07f7e09fa234dac9b15aaf39"
 
 [[package]]
+name = "oxide_todo"
+version = "0.2.0"
+dependencies = [
+ "actix-extensible-rate-limit",
+ "actix-http",
+ "actix-test",
+ "actix-web",
+ "awc",
+ "chrono",
+ "dotenv",
+ "entity",
+ "futures-core",
+ "hex",
+ "hmac",
+ "jwt",
+ "log",
+ "migration",
+ "pretty_env_logger",
+ "rstest",
+ "sea-orm",
+ "serde",
+ "serde_json",
+ "serial_test",
+ "sha2",
+ "sqlx-core",
+ "thiserror",
+ "utoipa 3.0.2",
+ "utoipa-swagger-ui",
+ "uuid",
+]
+
+[[package]]
 name = "parking"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1915,38 +1947,6 @@ name = "regex-syntax"
 version = "0.6.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "456c603be3e8d448b072f410900c09faf164fbce2d480456f50eea6e25f9c848"
-
-[[package]]
-name = "restful_todo"
-version = "0.2.0"
-dependencies = [
- "actix-extensible-rate-limit",
- "actix-http",
- "actix-test",
- "actix-web",
- "awc",
- "chrono",
- "dotenv",
- "entity",
- "futures-core",
- "hex",
- "hmac",
- "jwt",
- "log",
- "migration",
- "pretty_env_logger",
- "rstest",
- "sea-orm",
- "serde",
- "serde_json",
- "serial_test",
- "sha2",
- "sqlx-core",
- "thiserror",
- "utoipa 3.0.2",
- "utoipa-swagger-ui",
- "uuid",
-]
 
 [[package]]
 name = "ring"

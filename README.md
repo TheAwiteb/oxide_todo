@@ -1,10 +1,10 @@
 <div align="center">
 
-# RESTful Todo
+# Oxide Todo
 
-RESTful Todo API with [Actix](https://actix.rs) and [SeaORM](https://www.sea-ql.org/). Documented by [swagger-ui](https://swagger.io/). Authenticated by [JWT](https://jwt.io/). Rate limited by [actix_extensible_rate_limit](https://crates.io/crates/actix_extensible_rate_limit). Tested by [rstest](https://crates.io/crates/rstest). Have fun! 😁
+Oxide Todo is RESTful API built with [Actix](https://actix.rs) and [SeaORM](https://www.sea-ql.org/). Documented by [swagger-ui](https://swagger.io/). Authenticated by [JWT](https://jwt.io/). Rate limited by [actix_extensible_rate_limit](https://crates.io/crates/actix_extensible_rate_limit). Tested by [rstest](https://crates.io/crates/rstest). Have fun! 😁
 
-[![CI](https://github.com/TheAwiteb/restful_todo/actions/workflows/CI.yaml/badge.svg)](https://github.com/TheAwiteb/restful_todo/actions/workflows/CI.yaml)
+[![CI](https://github.com/TheAwiteb/oxide_todo/actions/workflows/CI.yaml/badge.svg)](https://github.com/TheAwiteb/oxide_todo/actions/workflows/CI.yaml)
 
 </div>
 
