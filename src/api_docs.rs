@@ -34,6 +34,7 @@ use utoipa::{Modify, OpenApi};
             crate::schemas::todo::TodoSchema,
             crate::schemas::todo::TodoListSchema,
             crate::schemas::todo::TodoListMetaSchema,
+            crate::schemas::todo::UpdateTodoSchema,
             // Server metadata
             crate::schemas::server_metadata::ServerMetadataSchema,
         )
