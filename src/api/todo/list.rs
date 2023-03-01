@@ -33,7 +33,12 @@ pub async fn list(
     let mut query = TodoEntity::find().filter(TodoColumn::UserId.eq(user.id));
 
     if let Some(title) = &params.title {
-        query = query.filter(TodoColumn::Title.like(title));
+        query = query.filter(
+            TodoColumn::Title
+                .contains(title)
+                .or(TodoColumn::Title.eq(title.as_str()))
+                .or(TodoColumn::Title.like(title)),
+        );
     }
     if let Some(status) = &params.status {
         query = query.filter(TodoColumn::Status.eq(status.clone()));
