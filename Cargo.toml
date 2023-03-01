@@ -3,7 +3,7 @@ members = [ ".", "migration", "entity"]
 
 [package]
 name = "oxide_todo"
-version = "0.2.0"
+version = "0.2.2"
 edition = "2021"
 publish = false
 description = "A RESTful API for a todo list, written in Rust."
